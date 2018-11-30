@@ -4,9 +4,12 @@ title: home
 permalink: /
 ---
 
-[**mockneat**](https://github.com/nomemory/mockneat) is an arbitrary data-generator library written in Java.
+[**mockneat**](https://github.com/nomemory/mockneat) [![Build Status](https://travis-ci.org/nomemory/mockneat.svg?branch=master)](https://travis-ci.org/nomemory/mockneat.svg?branch=master) [![codecov](https://codecov.io/gh/nomemory/mockneat/branch/master/graph/badge.svg)](https://codecov.io/gh/nomemory/mockneat)
+ is an arbitrary data-generator <sup>open-source library</sup> written in Java.
 
-It provides a simple but powerful (fluent) API that enable developers to create [json](#json), xml, [csv](#csv), [sql](#sql) data programatically. It can also act as [a powerful `Random` substitute](#random) or a mocking library.
+It provides a simple but powerful (fluent) API that enable developers to create [json](#json), xml, [csv](#csv) and [sql](#sql) data programatically.
+
+It can also act as [a powerful `Random` substitute](#random) or a mocking library.
 
 #### **json**
 

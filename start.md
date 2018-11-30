@@ -4,7 +4,9 @@ title: start
 permalink: /start/
 ---
 
-[**mockneat**](https://github.com/nomemory/mockneat) is hosted on **[jcenter()](https://bintray.com/nomemory/maven/mockneat)**. Please check the link for the latest versions. 
+[**mockneat**](https://github.com/nomemory/mockneat) is hosted on **[jcenter()](https://bintray.com/nomemory/maven/mockneat)** and it's available as a dependency for [maven](#maven), [gradle](#gradle) and ivy.
+
+The latest version can also be built directly from [sources](#sources).
 
 #### **maven**
 
@@ -44,7 +46,7 @@ Clone it from github:
 git clone https://github.com/nomemory/mockneat.git
 ```
 
-Build the "fat jar" - the jar that contains MockNeat and all its dependencies:
+Create the [fat jar](https://stackoverflow.com/questions/19150811/what-is-a-fat-jar):
 
 ```
 gradle shadowJar
