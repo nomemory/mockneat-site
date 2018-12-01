@@ -4,9 +4,11 @@ title: start
 permalink: /start/
 ---
 
-[**mockneat**](https://github.com/nomemory/mockneat) is hosted on **[jcenter()](https://bintray.com/nomemory/maven/mockneat)** and it's available as a dependency for [maven](#maven), [gradle](#gradle) and ivy.
+[**mockneat**](https://github.com/nomemory/mockneat) is hosted on [jcenter()](https://bintray.com/nomemory/maven/mockneat) and it's available as a dependency for [maven](#maven), [gradle](#gradle) and ivy.
 
-The latest version can also be built directly from [sources](#sources).
+The library is *free* and *open-source*, so the the latest version can be built directly from the [source code](#sources).
+
+*Note*: There is also a Maven Central mirror, but I recommend you to use the jcenter() repository if possible.
 
 #### **maven**
 
@@ -17,7 +19,6 @@ The latest version can also be built directly from [sources](#sources).
         <url>https://jcenter.bintray.com/</url>
     </repository>
 </repositories>
-
 <dependencies>
     <dependency>
         <groupId>net.andreinc.mockneat</groupId>
@@ -40,13 +41,13 @@ dependencies {
 
 #### **sources**
 
-Clone it from github:
+Clone it from github.:
 
 ```
 git clone https://github.com/nomemory/mockneat.git
 ```
 
-Create the [fat jar](https://stackoverflow.com/questions/19150811/what-is-a-fat-jar):
+Create the [fat jar](https://stackoverflow.com/questions/19150811/what-is-a-fat-jar). This will contain **mockneat** and all the associated dependencies:
 
 ```
 gradle shadowJar
@@ -54,4 +55,4 @@ gradle shadowJar
 
 Check the `./build/libs/` for `.jar` file: `mockneat-<version>-all.jar`.
 
-Add the `.jar` to the classpath.
+Add the `mockneat-<version>-all.jar` to the classpath of the project.

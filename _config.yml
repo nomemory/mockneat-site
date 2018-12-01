@@ -31,6 +31,7 @@ highlighter: rouge
 ## Pages
 header_pages:
   - start.md
+  - tutorial.md
   - docs.md
 
 # Exclude from processing.
