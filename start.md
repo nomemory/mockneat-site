@@ -1,7 +1,8 @@
 ---
-layout: page
-title: start
+layout: single
 permalink: /start/
+sidebar:
+  nav: "start"
 ---
 
 [**mockneat**](https://github.com/nomemory/mockneat) is hosted on [jcenter()](https://bintray.com/nomemory/maven/mockneat) and it's available as a dependency for [maven](#maven), [gradle](#gradle) and ivy.

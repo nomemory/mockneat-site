@@ -1,0 +1,28 @@
+main:
+  - title: "start"
+    url: /start
+  - title: "tutorial"
+    url: /tutorial
+
+start:
+  - title: start
+    children:
+      - title: "maven"
+        url: /start#maven
+      - title: "gradle"
+        url: /start#gradle
+      - title: "sources"
+        url: /start#sources
+
+tutorial:
+  - title: "The MockNeat class"
+    url: /tutorial#creating-mockneat-objects
+  - title: "MockNeat as an enhanced Random for:"
+    url: /tutorial#mockneat-as-an-enhanced-random
+    children:
+      - title: "Booleans"
+        url: /tutorial#booleans
+      - title: "Chars"
+        url: /tutorial#chars
+      - title: "Ints"
+        url: /tutorial#ints

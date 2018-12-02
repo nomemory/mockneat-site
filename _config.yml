@@ -17,22 +17,32 @@ title: mockneat
 description: >- # this means to ignore newlines until "baseurl:"
   Official MockNeat Java library documentation.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+url: "http://www.mockneat.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username:
 github_username:  nomemory
 
 # Build settings
 markdown: kramdown
-theme: minima
+theme: minimal-mistakes-jekyll
 highlighter: rouge
 #plugins:
 #  - jekyll-feed
 
 ## Pages
-header_pages:
-  - start.md
-  - tutorial.md
-  - docs.md
+# header_pages:
+
+author:
+  name: "Andrei N. Ciobanu"
+  avatar: "/assets/images/me.jpg"
+  bio: "Passionate Software Developer"
+  location: "Bucharest, Romania"
+  links:
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/nomemory"
+    - label: "LinkedIn"
+      icon: "fab fa-fw fa-linkedin"
+      url: "https://www.linkedin.com/in/andrei-n-ciobanu-50708611/"
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
