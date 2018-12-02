@@ -78,7 +78,7 @@ It's highly recommended to avoid creating multiple `MockNeat` instances. It's be
 
 # MockNeat as an enhanced `Random`
 
-Internally `MockNeat` wraps a java `Random` implementation and offers a powerful API for generating arbitrary values for primitive and `String` types.
+Internally `MockNeat` wraps a java `Random` implementation and offers a powerful API for generating arbitrary values for primitive ([`boolean`](#booleans), [`chars`](#chars), [`ints`](#ints), [`doubles`](#doubles), etc.), `String`, `LocalDate`, `Day` and `Month` types.
 
 After creating any of the data generators (also called a `MockUnit<Type>`s) you always have to call `get()` in order to obtain the actual value. **mockneat** works in a lazy way, no value will be generated until explicitly calling `get()`.
 
@@ -155,3 +155,99 @@ char lowerLetterOrDigit = chars().types(LOWER_LETTERS, DIGITS).get();
 ## Ints
 
 `int` (or `Integer`) values can be generated using the `ints()` (or `mockNeat.ints()`) method.
+
+```java
+import static net.andreinc.mockneat.unit.types.Ints.ints;
+...
+
+// Generates a arbitrary integer in the interval
+// [Integer.MIN_VALUE, Integer.MAX_VALUE]
+int x = ints().get();
+
+// Generates an arbitrary integer in the interval
+// [0, 10)
+int y = ints().range(0, 10).get();
+
+// Generates an arbitrary integer in the interval
+// [0, 100)
+int z = ints().bound(100).get();
+```
+
+The `ints()` data generator has an additional helper method that allows the developer to "extract" a random value from an array `int[]`:
+
+```java
+// Generates a integer value from the given array
+int[] array = new int[] {1,10,100,1000};
+int fromArray = ints().from(array).get();
+```
+
+For example we can use the `from(int[])` method to arbitrary generate a `10x10` matrix of integers containing only `0` and `1`:
+
+```java
+// Create a "matrix" of zeroes and ones
+int[][] zeroesAndOnes = new int[10][10];
+
+// Populate the matrix with values
+for(int i = 0; i < 10; i++)
+    for(int j = 0; j < 10; j++)
+        zeroesAndOnes[i][j] = ints()
+                                .from(new int[]{0, 1})
+                                .get();
+
+
+// Printing the matrix
+for (int i = 0; i < 10; i++) {
+    for(int j = 0; j < 10; j++) {
+        System.out.print(zeroesAndOnes[i][j] + " ");
+    }
+    System.out.println();
+}
+
+// (Possible) Output:
+/**
+1 0 1 1 1 1 1 1 0 1
+0 0 1 0 1 1 1 0 0 0
+1 0 0 1 0 1 1 1 1 1
+1 1 1 1 1 1 0 1 0 0
+1 1 1 1 0 1 0 1 1 1
+0 0 0 0 1 0 0 1 1 0
+0 1 0 1 0 1 1 1 0 0
+0 0 1 1 1 1 1 1 1 0
+1 0 1 0 0 1 1 0 1 0
+0 0 0 1 0 0 0 0 1 1
+*/
+```
+
+## Doubles
+
+`double` (or `Double`) values can be generated using the `doubles()` (or `mockNeat.doubles()`) method.
+
+```java
+import static net.andreinc.mockneat.unit.types.Doubles.doubles;
+...
+
+// Generates an arbitrary double in the interval [0.0, 1.0)
+double d1 = doubles().get();
+
+// Generates an arbitrary double in the interval [0,0, 10.0)
+double d2 = doubles().range(0, 10.0).get();
+```
+
+Just like the `ints()` data generator, the `doubles()` generator has a helper method to select values randomly from an an already existing array (`double[] array`).
+
+```java
+// Generates an arbitrary double that is either 1.1, 1.2 or 1.3
+double d3 = doubles().from(new double[]{1.1, 1.2, 1.3}).get();
+```
+
+## Longs and floats
+
+The API for `longs()` is identical with the one for [`ints()`](#ints).
+
+The API for `floats()` is identical with one for [`doubles()`](#doubles).
+
+For brevity we won't add additional code examples.
+
+# "Everything" is a `MockUnit<T>`
+
+TO BE CONTINUED

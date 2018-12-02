@@ -26,3 +26,9 @@ tutorial:
         url: /tutorial#chars
       - title: "Ints"
         url: /tutorial#ints
+      - title: "Doubles"
+        url: /tutorial#doubles
+      - title: "Longs and floats"
+        url: /tutorial#longs-and-floats
+  - title: "Everything is a MockUnit<T>"
+    url: /tutorial#everything-is-a-mockunitt                      
