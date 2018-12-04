@@ -12,7 +12,7 @@ It provides a simple but powerful (fluent) API that enables developers to create
 
 It can also act as a powerful `Random` substitute or a mocking library.
 
-The library is still in active development, new features or improvements are added every week/month.
+The library is still in active development, new features or improvements are added frequently.
 
 ```java
 @Data
