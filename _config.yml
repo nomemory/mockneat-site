@@ -32,15 +32,21 @@ highlighter: rouge
 # header_pages:
 
 author:
-  name: "Andrei N. Ciobanu"
+  name: "Andrei N. Ciobanu (nomemory)"
   avatar: "/assets/images/me.jpg"
   bio: "Passionate Software Developer"
   location: "Bucharest, Romania"
   links:
-    - label: "GitHub"
+    - label: MockNeat GitHub
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/nomemory/mockneat"
+    - label: Maven Repository
+      icon: "fab fa-fw fa-java"
+      url: "https://bintray.com/bintray/jcenter/mockneat"
+    - label: "My Other Projects"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/nomemory"
-    - label: "LinkedIn"
+    - label: "Let's connect"
       icon: "fab fa-fw fa-linkedin"
       url: "https://www.linkedin.com/in/andrei-n-ciobanu-50708611/"
 

@@ -3,6 +3,8 @@ main:
     url: /start
   - title: "tutorial"
     url: /tutorial
+  - title: "docs"
+    url: /docs
 
 start:
   - title: start
@@ -30,5 +32,181 @@ tutorial:
         url: /tutorial#doubles
       - title: "Longs and floats"
         url: /tutorial#longs-and-floats
+      - title: "Strings"
+        url: /tutorial#strings
+      - title: "Dates"
+        url: /tutorial#dates
   - title: "Everything is a MockUnit<T>"
-    url: /tutorial#everything-is-a-mockunitt                      
+    url: /tutorial#everything-is-a-mockunitt
+    children:
+      - title: "Closing Methods"
+        url: /tutorial#closing-methods
+      - title: "Transformer Methods"
+        url: /tutorial#transformer-methods
+  - title: "More than an enhanced Random"
+    url: /tutorial#more-than-an-enhanced-random
+    children:
+        - title: "Address Generators"
+          url: /tutorial#address-generators
+        - title: "Financial Generators"
+          url: /tutorial#financial-generators
+        - title: "Internet Data Generators"
+          url: /tutorial#internet-data-generators
+        - title: "User Data Generators"
+          url: /tutorial#user-data-generators
+
+docs:
+  - title: "data generators"
+    url: "/docs#datagenerators"
+    children:
+      - title: "bools()"
+        url: /docs#bools
+      - title: "chars()"
+        url: /docs#chars
+      - title: "cities()"
+        url: /docs#cities
+      - title: "constructor()"
+        url: /docs#constructor
+      - title: "countries()"
+        url: /docs#countries
+      - title: "creditCards()"
+        url: /docs#creditcards
+      - title: "creditCards().names()"
+        url: /docs#creditcardsnames
+      - title: "currencies()"
+        url: /docs#currencies
+      - title: "currencies().name()"
+        url: /docs#currenciesname
+      - title: "currencies().symbol()"
+        url: /docs#currenciessymbol
+      - title: "currencies().code()"
+        url: /docs#currenciescode
+      - title: "currencies().forexPair()"
+        url: /docs#currenciesforexpair
+      - title: "csvs()"
+        url: /docs#csvs
+      - title: "cvvs()"
+        url: /docs#cvvs
+      - title: "dicts()"
+        url: /docs#dicts
+      - title: "days()"
+        url: /docs#days
+      - title: "departments()"
+        url: /docs#departments
+      - title: "domains()"
+        url: /docs#domains
+      - title: "doubles()"
+        url: /docs#doubles
+      - title: "emails()"
+        url: /docs#emails
+      - title: "factory()"
+        url: /docs#factory
+      - title: "files()"
+        url: /docs#files
+      - title: "filler()"
+        url: /docs#filler
+      - title: "floats()"
+        url: /docs#floats
+      - title: "fmt()"
+        url: /docs#fmt
+      - title: "from()"
+        url: /docs#from
+      - title: "fromKeys()"
+        url: /docs#fromkeys
+      - title: "fromValues()"
+        url: /docs#fromvalues
+      - title: "genders()"
+        url: /docs#genders
+      - title: "hashes()"
+        url: /docs#hashes
+      - title: "ibans()"
+        url: /docs#ibans
+      - title: "ints()"
+        url: /docs#ints
+      - title: "intSeq()"
+        url: /docs#intseq
+      - title: "ipv4s()"
+        url: /docs#ipv4s
+      - title: "ipv6s()"
+        url: /docs#ipv6s
+      - title: "issns()"
+        url: /docs#issns
+      - title: "localDates()"
+        url: /docs#localdates
+      - title: "longs()"
+        url: /docs#longs
+      - title: "longSeq()"
+        url: /docs#longseq
+      - title: "macs()"
+        url: /docs#macs
+      - title: "markovs()"
+        url: /docs#markovs
+      - title: "mimes()"
+        url: /docs#mimes
+      - title: "months()"
+        url: /docs#months
+      - title: "money()"
+        url: /docs#money
+      - title: "names()"
+        url: /docs#names
+      - title: "naughtyStrings()"
+        url: /docs#naughtystrings
+      - title: "probabilities()"
+        url: /docs#probabilities
+      - title: "passwords()"
+        url: /docs#passwords
+      - title: "reflect()"
+        url: /docs#reflect
+      - title: "regex()"
+        url: /docs#regex
+      - title: "seq()"
+        url: /docs#seq
+      - title: "sqlInserts()"
+        url: /docs#sqlinserts
+      - title: "shufflers()"
+        url: /docs#shufflers
+      - title: "sscs()"
+        url: /docs#sscs
+      - title: "strings()"
+        url: /docs#strings
+      - title: "urls()"
+        url: /docs#urls
+      - title: "usStates()"
+        url: /docs#usstates
+      - title: words()
+        url: /docs#words
+  - title: "MockUnit"
+    url: /docs#mockunit
+    children:
+        - title: "array()"
+          url: /docs#array
+        - title: "collection()"
+          url: /docs#collection
+        - title: "consume()"
+          url: /docs#consume
+        - title: "get()"
+          url: /docs#get
+        - title: "list()"
+          url: /docs#list
+        - title: "map()"
+          url: /docs#map
+        - title: "mapKeys()"
+          url: /docs#mapkeys
+        - title: "mapToDouble()"
+          url: /docs#maptodouble
+        - title: "mapToInt()"
+          url: /docs#maptoint
+        - title: "mapToLong()"
+          url: /docs#maptolong
+        - title: "mapToString()"
+          url: /docs#maptostring
+        - title: "mapVals()"
+          url: /docs#mapvals
+        - title: "val()"
+          url: /docs#val
+        - title: "valStr()"
+          url: /docs#valstr
+        - title: "set()"
+          url: /docs#set
+        - title: "serialize()"
+          url: /docs#serialize
