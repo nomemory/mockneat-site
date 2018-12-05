@@ -210,3 +210,56 @@ docs:
           url: /docs#set
         - title: "serialize()"
           url: /docs#serialize
+  - title: "MockUnitDays"
+    url: /docs#mockunitdays
+    children:
+        - title: "display()"
+          url: /docs#display
+  - title: "MockUnitDouble"
+    url: /docs#mockunitdouble
+    children:
+        - title: "array()"
+          url: /docs#array-1
+        - title: "arrayPrimitive()"
+          url: /docs#arrayprimitive
+        - title: "doubleStrema()"
+          url: /docs#doublestream
+  - title: "MockUnitInt"
+    url: /docs#mockunitint
+    children:
+        - title: "array()"
+          url: /docs#array-2
+        - title: "arrayPrimitive()"
+          url: /docs#arrayprimitive-1
+        - title: "intStream()"
+          url: /docs#intstream
+  - title: "MockUnitLocalDate"
+    url: /docs#mockunitlocaldate
+    children:
+        - title: "toUtilDate()"
+          url: /docs#toutildate
+  - title: "MockUnitLong"
+    url: /docs#mockunitlong
+    children:
+        - title: "array()"
+          url: /docs#array-3
+        - title: "arrayPrimitive()"
+          url: /docs#arrayprimitive-2
+        - title: "longStream()"
+          url: /docs#longstream
+  - title: "MockUnitMonth"
+    url: /docs#mockunitmonth
+    children:
+        - title: "display()"
+          url: /docs#display-1
+  - title: "MockUnitString"
+    url: /docs#mockunitstring
+    children:
+        - title: "append()"
+          url: /docs#append
+        - title: "array()"
+          url: /docs#array-4
+        - title: "base64()"
+          url: /docs#base64
+        - title: "escapeCsv()"
+          url: /docs#escapecsv

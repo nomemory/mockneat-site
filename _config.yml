@@ -25,11 +25,15 @@ github_username:  nomemory
 markdown: kramdown
 theme: minimal-mistakes-jekyll
 highlighter: rouge
-#plugins:
-#  - jekyll-feed
 
-## Pages
-# header_pages:
+# Search
+search_provider: algolia
+search: true
+algolia:
+  application_id: SFR5NV1H0B
+  index_name: mockneat
+  search_only_api_key: 00ae75109c48bb2f4edb723dc61625f3
+  powered_by: true
 
 author:
   name: "Andrei N. Ciobanu (nomemory)"

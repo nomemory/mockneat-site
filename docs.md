@@ -79,7 +79,7 @@ The method signature is: `<T> Constructor<T> constructor(Class<T> cls)`.
 
 Example for generating `Test` mock objects:
 
-```
+```java
 public class Test {
     private String x;
     private Integer y;
@@ -93,6 +93,7 @@ public class Test {
         this.y = y;
         this.z = z;
     }
+}
 ```
 
 ```java
@@ -121,7 +122,7 @@ String countryName = countries().names().get();
 Example for generating a country iso2() code:
 
 ```java
-String iso2 = countries().iso2().get()
+String iso2 = countries().iso2().get();
 // Possible Output: MR
 ```
 
@@ -134,7 +135,7 @@ All the supported credit cards types are defined in the `CreditCardType` enum.
 Example for generating a valid credit card number (by default the `CreditCardType` is `AMERICAN_EXPRESS`):
 
 ```java
-String amex = creditCards().get()
+String amex = creditCards().get();
 ```
 
 Example for generating a 16 digits VISA:
@@ -143,8 +144,9 @@ Example for generating a 16 digits VISA:
 String visa16 = creditCards().type(VISA_16).get();
 ```
 
-Example for generating an arbitrary credit card that can be either `VISA_16` or `MASTERCARD`.
-```
+Example for generating an arbitrary credit card that can be either `VISA_16` or `MASTERCARD`:
+
+```java
 String visaOrMastercard = creditCards()
                            .types(VISA_16, MASTERCARD)
                            .get();
@@ -188,7 +190,7 @@ This method returns currency names from around the world. Some of the possible o
 Example:
 
 ```java
-String currencyName = currencies().name().get()
+String currencyName = currencies().name().get();
 ```
 
 ## `currencies().symbol()`
@@ -198,7 +200,7 @@ This method returns currency symbols from around the world. Some of the possible
 Example:
 
 ```java
-String currencySymbol = currencies().symbol().get()
+String currencySymbol = currencies().symbol().get();
 ```
 
 ## `currencies().code()`
@@ -346,7 +348,7 @@ The current list of `DictType` is:
 Example for generating a country name directly from the dictionary:
 
 ```java
-String countryName = dicts().type(COUNTRY_NAME).get()
+String countryName = dicts().type(COUNTRY_NAME).get();
 ```
 
 Obtaining all the data from the dictionaries in a (immutable) list can be done through the `data()` method:
@@ -434,7 +436,7 @@ Double val = doubles().get();
 // Possible Output: 0.26378031782078615
 ```
 
-Example for generating a single double value in interval [0.0, bound)
+Example for generating a single double value in interval [0.0, bound):
 
 ```java
 Double bound = 10.0;
@@ -442,7 +444,7 @@ Double boundedVal = doubles().bound(bound).get();
 // Possible Output: 7.9842438463207905
 ```
 
-Example for generating a single double value in a given range [100.0, 200.0)
+Example for generating a single double value in a given range [100.0, 200.0):
 
 ```java
 Double valInRange = doubles().range(100.0, 200.0).get();
@@ -474,7 +476,7 @@ String domsEmail = emails().domains("abc.com", "corp.org").get();
 // Possible Output: funjulius@corp.org
 ```
 
-## factory()
+## `factory()`
 
 This method is used to generate mock objects using static factory methods.
 
@@ -495,6 +497,8 @@ public class Test {
         this.y = y;
         this.z = z;
     }
+    //....
+}
 //....
 ```
 
@@ -505,7 +509,9 @@ public class TestFactory {
     public static Test buildTest(String x, Integer y, Boolean z) {
         return new Test(x, y, z);
     }
-// ..,
+    // ...
+}
+// ...
 ```
 
 The `buildTest` method can be used to instantiate mock Test objects like this:
@@ -515,6 +521,7 @@ Test t3 = factory(Test.class, TestFactory.class)
               .method("buildTest")
               .params(strings(), 1, true)
               .get();
+
 // Possible Output: Test{x='6pmmWFiAEPW35dUj9sjcnOaglfXO7hIoyu38UK395pZ8Ns1dPJSkpz0Sg0C4IVVA', y=1, z=true}
 ```
 
@@ -523,7 +530,7 @@ Test t3 = factory(Test.class, TestFactory.class)
 This method is useful to generate random lines from a given file.
 The file is loaded in memory only once, so the recommendation is to avoid keeping large files into memory.
 
-Example to generate a random line from a file '/Users/nomemory/Desktop/test.txt'. The file contents are:
+Example to generate a random line from a file `/Users/nomemory/Desktop/test.txt`. The file contents are:
 
 ```
 text1
@@ -604,7 +611,9 @@ Example for obtaining a random value from a List<Double>:
 ```java
 List<Double> list = asList(0.0, 0.1, 0.5, 0.6);
 Double x = from(list).get();
-// Possible Output: 0.5
+// Output:
+/* 0.5
+*/
 ```
 
 Note: If the `List` is implemented as an `ArrayList` the complexity of the algorithm will be `O(1)`. If it's a `LinkedList` the complexity will be `O(n)`.
@@ -929,16 +938,20 @@ This method is used to generate Markov Text.
 
 For the moment this feature is not:
 - very memory efficient;
-- there aren't many options, but to generate text from Kafka's Metamorphosis.
+- there aren't many options, but to generate text from Kafka's Metamorphosis or Lorem Ipsum.
 
 Example for generating a 512 characters text:
 
 ```java
 String text = markovs().size(512).type(KAFKA).get();
 //Possible Output: In his efforts to muster all the things that concerned him. This meant not only in secret. For two whole days, all the harder. Across the room came in early in the doorway with a knife, he thought it was easy to see him. He had forgotten, but instead of being afraid, the charwoman stood in the direction of the bedrooms: come and give me a bit of him and seemed, at first, that was quite incapable of going backwards in a nice, gilded frame. It showed a lady fitted out with a few raisins and almonds; some chee
+
+// Or
+
+String loremIpsum = markovs().size(1024).type(LOREM_IPSUM).get();
 ```
 
-## mimes()
+## `mimes()`
 
 This method is used to generate mime types (Eg.: application/msword, application/epub+zip, image/gif, text/html
 image/x-icon, etc).
@@ -948,7 +961,7 @@ String mime = mimes().get();
 // Possible Output: application/vnd.visio
 ```
 
-## months()
+## `months()`
 
 This method is used to generate Months names. It is used to return `Month` objects.
 
@@ -975,7 +988,7 @@ Month beforeSummer = months().before(JUNE).get();
 // Possible Output: APRIL
 ```
 
-## money()
+## `money()`
 
 This method is used to generate money amounts as Strings (Money Symbol + Sum of Money).
 
@@ -1149,8 +1162,7 @@ So for example if the `Test` class has 3 fields:
 
 We can use the default mechanism by doing this:
 
-```
-java
+```java
 
 Test tR = reflect(Test.class)
                         .useDefaults(true)
@@ -1166,14 +1178,16 @@ If you want to override the default mechanism you can use the `type(Class<?>, Mo
 
 So let's take for example a class `Test2` with 5 fields:
 
-```
-java
+```java
 public class Test2 {
     private int x;
     private int y;
     private short z;
     private String w1;
     private String w2;
+    //....
+}
+//....
 ```
 
 We can:
@@ -1318,8 +1332,7 @@ The `Shufflers` class contain useful methods to create new shuffled strings, arr
 
 Example for generating 5 random permutation of a given `int[]` array:
 
-```
-java
+```java
 int[] x = { 1, 2, 3, 4, 5, 6 };
 
 shufflers()
@@ -1815,4 +1828,306 @@ Example for generating an infinite `Stream<Boolean>`:
 
 ```java
 Stream<Boolean> stream = bools().stream().val();
+```
+
+# MockUnitDays
+
+The `MockUnitDays` interface extends `MockUnit<DayOfWeek>`.
+
+```java
+public interface MockUnitDays extends MockUnit<DayOfWeek> {}
+```
+
+This means that it "inherits" all the methods from [`MockUnit<DayOfWeek>`](MockUnit)
+
+The easiest way to obtain a `MockUnitDays` is to call the [`days()`](MockNeat#days) method from `MockNeat<T>`.
+
+## `display()`
+
+This method generates a `MockUnitString` from a `MockUnitDays` by transforming the days of the week into localised strings.
+
+Examples of generating a String that represents a random day of the week-end in French:
+
+```java
+String day = m.days()
+              .after(FRIDAY)
+              .display(TextStyle.FULL_STANDALONE, Locale.FRANCE)
+              .val();
+// Possible Output: "dimanche"
+```
+
+The method signatures are:
+
+```java
+default MockUnitString display(TextStyle textStyle, Locale locale)
+```
+
+When we want to use the default locale:
+```java
+default MockUnitString display(TextStyle textStyle)
+```
+
+When we want to use the default locale and the `textStyle` as `FULL_STANDALONE`:
+```java
+default MockUnitString display()
+```
+
+# MockUnitDouble
+
+The `MockUnitDouble` interface extends `MockUnit<Double>`.
+
+```java
+public interface `MockUnitDouble` extends MockUnit<Double>
+```
+
+This means that it "inherits" all the methods from [`MockUnit<Double>`](MockUnit)
+
+The easiest way to obtain a `MockUnitDouble` is to call the [`doubles()`](MockNeat#doubles) method from `MockNeat` or to call the [`mapToDouble()`](MockUnit#maptodouble) method.
+
+## `array()`
+
+The method is used to generate a `MockUnit<Double[]>` from a `MockUnitDouble`.
+
+Compared to the [`array()`](MockUnit#array) method from `MockUnit<T>` there's no reason to specify the type of the array. We know it's `Double[]`.
+
+Example for creating an array of 100 random Doubles, with values between [1000.0, 2000.0):
+
+```java
+Double[] array = mock.doubles()
+                      .range(1000.0, 2000.0)
+                      .array(100)
+                      .val();
+````
+
+## `arrayPrimitive()`
+
+This method is used to generate a `MockUnit<double[]>` from a `MockUnitDouble`.
+
+Example for creating a primitive array of 100 random doubles, with values between [1000.0, 2000.0):
+
+```java
+double[] array = mock.doubles()
+                     .range(1000, 200)
+                     .arrayPrimitive(100)
+                     .val();
+```
+
+## `doubleStream()`
+
+Can be used to obtain a more specific `DoubleStream` instead of a `Stream<Double>`, which normally can be obtain with the [`stream()`](MockUnit#stream) from `MockUnit<Double>`.
+
+# MockUnitInt
+
+The `MockUnitInt` interface extends `MockUnit<Integer>`.
+
+```java
+public interface `MockUnitInt` extends MockUnit<Integer>
+```
+
+This means that it "inherits" all the methods from [`MockUnit<Integer>`](MockUnit)
+
+The easiest way to obtain a `MockUnitInt` is to call the [`ints()`](MockNeat#ints) method from `MockNeat` or to call the [`mapToInt()`](MockUnit#maptoint) method.
+
+## `array()`
+
+The method is used to generate a `MockUnit<Integer[]>` from a `MockUnitInt`.
+
+Compared to the [`array()`](MockUnit#array) method from `MockUnit<T>` there's no reason to specify the type of the array. We know it's `Integer[]`.
+
+Example for creating an array of 100 random Integers, with values between [1000, 2000):
+
+```java
+Integer[] array = mock.ints()
+                      .range(1000, 2000)
+                      .array(100)
+                      .val();
+````
+
+### `arrayPrimitive()`
+
+This method is used to generate a `MockUnit<int[]>` from a `MockUnitInt`.
+
+Example for creating a primitive array of 100 random integers, with values between [1000, 2000):
+
+```java
+int[] array = mock.ints()
+                  .range(1000, 200)
+                  .arrayPrimitive(100)
+                  .val();
+```
+
+### `intStream()`
+
+Can be used to obtain a more specific `IntStream` instead of a `Stream<Integer>`, which normally can be obtain with the [`stream()`](MockUnit#stream) from `MockUnit<Integer>`.
+
+# MockUnitLocalDate
+
+The `MockUnitLocalDate` interface extends `MockUnit<LocalDate>`.
+
+```java
+public interface `MockUnitLocalDate` extends MockUnit<LocaleDate>
+```
+
+This means that it "inherits" all the methods from [`MockUnit<LocaleDate>`](MockUnit)
+
+The easiest way to obtain a `MockUnitLocalDate` is to call the [`localDates()`](MockNeat#localdates) method from `MockNeat`.
+
+### `toUtilDate()`
+
+Translates the existing `MockUnitLocalDate` into a `MockUnit<java.util.Date>`.
+
+Example:
+```java
+Date date = mock.localDates()
+                  .between(
+                     of(2000, 10, 10),
+                     of(2020, 10, 10)
+                  )
+                  .toUtilDate()
+                  .val();
+```
+
+# MockUnitLong
+
+The `MockUnitLong` interface extends `MockUnit<Long>`.
+
+```java
+public interface MockUnitLong extends MockUnit<Long> {}
+```
+
+This means that it "inherits" all the methods from [`MockUnit<Long>`](MockUnit)
+
+The easiest way to obtain a `MockUnitInt` is to call the [`longs()`](MockNeat#longs) method from `MockNeat` or to call the [`mapToLong()`](MockUnit#maptolong) method.
+
+## `array()`
+
+The method is used to generate a `MockUnit<Long[]>` from a `MockUnitLong`.
+
+Compared to the [`array()`](MockUnit#array) method from `MockUnit<T>` there's no reason to specify the type of the array. We know it's `Long[]`.
+
+Example for creating an array of 100 random Longs, with values between [1000, 2000):
+
+```java
+Long[] array = mock.longs()
+                   .range(1000l, 2000l)
+                   .array(100)
+                   .val();
+````
+
+## `arrayPrimitive()`
+
+This method is used to generate a `MockUnit<long[]>` from a `MockUnitLong`.
+
+Example for creating a primitive array of 100 random longs, with values between [1000l, 2000l):
+
+```java
+long[] array = mock.longs()
+                   .range(1000, 200)
+                   .arrayPrimitive(100)
+                   .val();
+```
+
+## `longStream()`
+
+Can be used to obtain a more specific `LongStream` instead of a `Stream<Long>`, which normally can be obtain with the [`stream()`](MockUnit#stream) from `MockUnit<Long>`.
+
+# MockUnitMonth
+
+The `MockUnitMonth` interface extends `MockUnit<Month>`.
+
+```java
+public interface MockUnitMonth extends MockUnit<Month> {}
+```
+
+That means that it inherits all the methods from `MockUnit<Month>`.
+
+The easiest way to obtain a MockUnitDays is to call the [`months()`](MockNeat#months) method from `MockNeat`.
+
+### `display()`
+
+Example:
+
+```java
+String month = mock.months()
+                    .before(JULY)
+                    .display(TextStyle.FULL, Locale.CANADA)
+                    .val();
+
+//Possible Ouput: May
+```
+
+# MockUnitString
+
+The `MockUnitString` extends the `MockUnit<String>` interface.
+
+```java
+@FunctionalInterface
+public interface MockUnitString extends MockUnit<String> {}
+```
+
+This means that it "interits" all the methods from MockUnit<String>, but it also adds new functionalities related to String operations.
+
+The easiest way to obtain a `MockUnitString` implementation is by calling [`mapToString()`](MockUnit#maptostring) on any `MockUnit<T>`. A lot of the methods are already returning `MockUnitString` by default.
+
+### `append()`
+
+Example:
+
+Example:
+```java
+// APPEND
+String[] cityAppend = mock.cities()
+                            .capitals()
+                            .append("-001") // To each generated String we append "-001"
+                            .array(10)
+                            .val();
+
+// Possible Output: [Bishkek-001, Ulaanbaatar-001, Kigali-001, Bratislava-001, Sarajevo-001, Kabul-001, Lusaka-001, Port Vila-001, Tegucigalpa-001, Astana-001]
+```
+### `array()`
+
+Example:
+```java
+// ARRAY
+String[] someDays = mock.days()
+                        .display()
+                        .array(10)
+                        .val();
+
+// Possible Output: [Saturday, Monday, Monday, Sunday, Sunday, Tuesday, Thursday, Friday, Monday, Wednesday]
+```
+
+### `base64()`
+
+Example:
+```java
+// Generate a list of names
+List<String> names = mock
+                     .names()
+                     .first()
+                     .format(CAPITALIZED)
+                     .list(5)
+                     .val();
+// Possible Output: [Carroll, Zane, Alfred, Brent, Loren]
+
+// Using seq() we iterate through the previous list and we encode the strings
+List<String> base64names = mock
+                            .seq(names)
+                            .mapToString()
+                            .base64()
+                            .list(5)
+                            .val();
+// Possible Output: [Q2Fycm9sbA==, WmFuZQ==, QWxmcmVk, QnJlbnQ=, TG9yZW4=]
+```
+
+### `escapeCsv()`
+
+Example
+```java
+String[] notFriendlyCsv = { "\"", /* OTHERS */};
+
+String friendlyCSV = mock.from(notFriendlyCsv)
+                         .mapToString()
+                         .escapeCsv()
+                         .val();
 ```
