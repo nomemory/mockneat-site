@@ -2,6 +2,7 @@
 layout: single
 permalink: /tutorial/
 classes: wide
+title: tutorial
 sidebar:
   nav: "tutorial"
 ---

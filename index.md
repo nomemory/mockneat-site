@@ -1,6 +1,7 @@
 ---
 layout: single
 classes: wide
+title: mockneat home
 permalink: /
 author_profile: true
 ---

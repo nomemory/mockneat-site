@@ -2,6 +2,7 @@
 layout: single
 permalink: /docs/
 classes: wide
+title: docs
 sidebar:
   nav: "docs"
 ---

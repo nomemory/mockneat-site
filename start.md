@@ -2,6 +2,7 @@
 layout: single
 classes: wide
 permalink: /start/
+title: getting started
 sidebar:
   nav: "start"
 ---
