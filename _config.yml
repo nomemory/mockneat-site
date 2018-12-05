@@ -27,8 +27,8 @@ theme: minimal-mistakes-jekyll
 highlighter: rouge
 
 # Search
-search_provider: algolia
 search: true
+search_provider: algolia
 algolia:
   application_id: SFR5NV1H0B
   index_name: mockneat
