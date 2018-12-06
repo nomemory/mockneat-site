@@ -7,6 +7,8 @@ sidebar:
   nav: "docs"
 ---
 
+Official docs for mockneat.
+
 # Data generators
 
 ## `bools()`

@@ -43,6 +43,8 @@ tutorial:
         url: /tutorial#closing-methods
       - title: "Transformer Methods"
         url: /tutorial#transformer-methods
+  - title: "The MockUnitString"
+    url: /tutorial#the-mockunitstring
   - title: "More than an enhanced Random"
     url: /tutorial#more-than-an-enhanced-random
     children:
