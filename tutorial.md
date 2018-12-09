@@ -13,7 +13,7 @@ This tutorial is intended to describe the ways of working with **mockneat**. It'
 
 # The `MockNeat` class
 
-The `MockNeat.class` is the "entry-point" of the library. Think of this as a *fat* factory class, responsible with the instantiation of all of the existing [data generators](../docs#datagenerators). It's the most important, and in most of the cases, the most "invisible" component from the library.
+The `MockNeat.class` is the "entry-point" of the library. Think of this as a *fat* factory class, responsible with the instantiation of all of the existing [data generators](../docs#datagenerators). It's the most important and, in most of the cases, the most "invisible" component from the library.
 
 By default three reusable `MockNeat` "factory objects" are created, each wrapping a different type of java `Random` generators ([ThreadLocalRandom](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadLocalRandom.html), [SecureRandom](http://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html) or [the good Old Random](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html)):
 
@@ -912,6 +912,179 @@ System.out.println(networkStuff);
 */
 ```
 
+## Sequence Generators
+
+Those methods are useful for generating sequences of numbers or to cycle through an already existing collection.
+
+The resulting data is not arbitrary, but the generators can prove useful for generating SQL table ids or "unique objects" for `Maps` and `Sets`.
+
+
+### [`intSeq()`](../docs#intseq) and [`longSeq()`](../docs#longseq)
+
+The simplest usage to define a sequence of numbers is with [`intSeq()`](../docs#intseq) for `Integer` or [`longSeq()`](../docs#longseq) for `Long`.
+
+Calling `get()` on the resulting `MockUnitInt` (or `MockUnitLong`) will return incremental values. By default both generators start at 0 and the increment is `1`. (Note: Negative increments are also supported).
+
+```java
+MockUnitInt sequence = intSeq();
+
+System.out.println(sequence.get()); // 0 <- default
+System.out.println(sequence.get()); // 1 <- 0+1
+System.out.println(sequence.get()); // 2 <- 1+1
+
+// Or for a "negative" sequence
+
+MockUnitLong negativeSeq = longSeq().increment(-5l);
+
+System.out.println(negativeSeq.get()); // 0
+System.out.println(negativeSeq.get()); // -5
+System.out.println(negativeSeq.get()); // -10
+```
+
+For example the previous "dice rolling example" (see [consume](#consume)) can be rewritten like this:
+
+```java
+intSeq()
+    .start(1) // The sequence starts with 1, by default is 0
+    .mapToString(i -> // The resulting i is an sequence [0, 1, 2...]
+            format("Roll = %d, Dice = %d", i, ints()
+                                                .range(1, 7)
+                                                .get()
+            )
+    )
+    .accumulate(10, "\n")
+    .consume(System.out::println);
+
+// Output
+/**
+Roll = 0, Dice = 3
+Roll = 1, Dice = 1
+Roll = 2, Dice = 1
+Roll = 3, Dice = 3
+Roll = 4, Dice = 5
+Roll = 5, Dice = 1
+Roll = 6, Dice = 2
+Roll = 7, Dice = 5
+Roll = 8, Dice = 1
+Roll = 9, Dice = 3
+*/    
+```
+
+Sequences allow cycling through elements by defining a `max` and/or `min`.
+
+```java
+intSeq()
+  .max(5)
+  .cycle(true) // by default is true
+  .list(10)
+  .consume(System.out::println);
+
+// Output:
+/**
+[0, 1, 2, 3, 4, 5, 0, 1, 2, 3]
+                // ^ cycling starts here
+*/  
+```
+
+If cycling is turned off (by explicitly calling `.cicle(false)`) and the max value is reached an exception is thrown:
+
+```java
+intSeq()
+  .max(5)
+  .cycle(false)
+  .list(10)
+  .consume(System.out::println);
+
+// Output
+/**
+...
+Caused by: java.lang.IllegalStateException: IntSeq overflow. Values are generated inside the interval: [-2147483648, 5]. Cannot increment any further.
+...
+*/
+```
+
+### [`seq()`](../docs#seq)
+
+[`seq()`](../docs#seq) is `MockUnit<T>` that allows traversing arrays or `Iterable<T>`.
+
+Each subsequent call will return the next value. For example if we want to traverse a `String[]` containing three values, and create a `Map<String, Integer>` we can do something like:
+
+```java
+String[] keys = new String[] {"A", "B", "C"};
+
+seq(keys)
+  .mapVals(keys.length, ints().supplier())
+  .consume(System.out::println);
+
+// Output
+/**
+{A=-1153871365, B=1543379867, C=221800466}
+*/
+```          
+
+## Text Generators
+
+[`strings()`](../docs#strings) is the standard text generator that can be used to generate unformatted, *gibberish* strings witha given format and having a fixed length.
+
+Fortunately more advanced generators were added:
+
+### [`fmt()`](../docs#fmt)
+
+[`fmt(String template).param(namedParam, mockunit)`](../docs#fmt) is a data generator that can be used to generate "formatted" text using named params. The format is defined in the `template` parameter. Internally the `fmt()` uses the [Aleph Formatter](https://github.com/nomemory/aleph-formatter) library.
+
+Example for generating a list of 10 `String` values having following format: `#{mac} -> #{ip}`
+
+```java
+fmt("#{mac} -> #{ip}")
+    .param("mac", macs().type(COLON_EVERY_2_DIGITS))
+    .param("ip", ipv4s())
+    .accumulate(10, "\n")
+    .consume(System.out::println);
+
+// Output
+/**
+02:9b:48:c3:11:c9 -> 79.197.227.84
+a8:3f:62:52:47:89 -> 215.26.43.138
+d0:f9:60:ee:a8:12 -> 223.178.99.247
+55:6c:ac:1c:af:ab -> 243.36.40.68
+71:7f:8e:2b:29:f6 -> 139.33.106.157
+...
+*/    
+```
+
+
+At each "iteration" the `#{mac}` and `#{ip}` *named params* are replaced with values generated from the associated `MockUnits`, in our case `macs()` respectively `#{ipv4s}`.
+
+If we were to re-write the "dice rolling example" (see [`consume()`](#consume) and [`intSeq()`](#intseq)) we can start with the format and fill up the data:
+
+```java
+fmt("Roll = #{rollNr}, Dice = #{diceValue}")
+      .param("rollNr", intSeq().start(1))
+      .param("diceValue", ints().range(1, 7))
+    .accumulate(10, "\n")
+    .consume(System.out::println);
+
+// Output:
+/**
+Roll = 1, Dice = 6
+Roll = 2, Dice = 3
+...
+*/    
+```
+
+## [`regex()`]
+
+
+
+## [`markovs()`]
+
+[`markovs()`](../docs#markovs) is an experimental (for now) implementation of text generated from a Markov Chain. I say experimental because the code is "not yet quite there" in terms of efficiency or flexibility.
+
+Nevertheless this generator can be used to create arbitrary text:
+
+## [`words()`]
+
+
 ## User Data Generators
 
 The following generators are useful to generate that is normally associated with an User.
@@ -932,7 +1105,7 @@ fmt("{email='#{email}', pass='#{pass}'}")
   .param("pass", passwords().types(WEAK, MEDIUM))
   .accumulate(10, "\n")
   .consume(System.out::println);
-  
+
 //Output:
 /**
 {email='stalkedharl@msn.com', pass='satchels'}
@@ -947,8 +1120,3 @@ fmt("{email='#{email}', pass='#{pass}'}")
 {email='piquebore@aol.com', pass='compote'}
 */
 ```
-
-Spoiler Alert:
-* [`fmt(String).param(key, mockunit)`](../docs#fmt) is a data generator that can be used to generate "formatted" text using named params.
-
-`#{email}` and `#{pass}` are the params replaced with arbitrary values from the associated `MockUnits`: `emails()` and `passwords()`.

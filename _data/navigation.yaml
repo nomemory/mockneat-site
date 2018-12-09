@@ -54,6 +54,10 @@ tutorial:
           url: /tutorial#financial-generators
         - title: "Internet Data Generators"
           url: /tutorial#internet-data-generators
+        - title: "Sequence Generators"
+          url: /tutorial#sequence-generators
+        - title: "Text Generators"
+          url: /tutorial#text-generators
         - title: "User Data Generators"
           url: /tutorial#user-data-generators
 
@@ -169,6 +173,8 @@ docs:
         url: /docs#shufflers
       - title: "sscs()"
         url: /docs#sscs
+      - title: "space()"
+        url: /docs#space
       - title: "strings()"
         url: /docs#strings
       - title: "urls()"

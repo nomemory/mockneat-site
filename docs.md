@@ -1355,6 +1355,27 @@ String ssc = sscs().get();
 // Possible Output: 776-32-8981
 ```
 
+## `space()`
+
+This method is used to generate arbitrary "Space Object" names like: Planet Names, Star Names, etc.
+
+```java
+space().constellations().consume(System.out::println);
+space().galaxies().consume(System.out::println);
+space().moons().consume(System.out::println);
+space().planets().consume(System.out::println);
+space().stars().consume(System.out::println);
+
+// Output:
+/**
+Libra
+Milky Way
+Triffid Nebula
+Saturn
+Proxima Centauri
+*/
+```
+
 ## `strings()`
 
 This method is used to generate random String(s).
@@ -1820,7 +1841,7 @@ This method doesn't return anything. It's a closing method.
 
 Example for storing a `Boolean` value in a file:
 ```java
-mock.bools().serialize(file1.obj);
+bools().serialize(file1.obj);
 ```
 
 ## `stream()`
@@ -1852,7 +1873,7 @@ This method generates a `MockUnitString` from a `MockUnitDays` by transforming t
 Examples of generating a String that represents a random day of the week-end in French:
 
 ```java
-String day = m.days()
+String day = days()
               .after(FRIDAY)
               .display(TextStyle.FULL_STANDALONE, Locale.FRANCE)
               .val();
@@ -1896,7 +1917,7 @@ Compared to the [`array()`](MockUnit#array) method from `MockUnit<T>` there's no
 Example for creating an array of 100 random Doubles, with values between [1000.0, 2000.0):
 
 ```java
-Double[] array = mock.doubles()
+Double[] array = doubles()
                       .range(1000.0, 2000.0)
                       .array(100)
                       .val();
@@ -1909,7 +1930,7 @@ This method is used to generate a `MockUnit<double[]>` from a `MockUnitDouble`.
 Example for creating a primitive array of 100 random doubles, with values between [1000.0, 2000.0):
 
 ```java
-double[] array = mock.doubles()
+double[] array = doubles()
                      .range(1000, 200)
                      .arrayPrimitive(100)
                      .val();
@@ -1940,7 +1961,7 @@ Compared to the [`array()`](MockUnit#array) method from `MockUnit<T>` there's no
 Example for creating an array of 100 random Integers, with values between [1000, 2000):
 
 ```java
-Integer[] array = mock.ints()
+Integer[] array = ints()
                       .range(1000, 2000)
                       .array(100)
                       .val();
@@ -1953,7 +1974,7 @@ This method is used to generate a `MockUnit<int[]>` from a `MockUnitInt`.
 Example for creating a primitive array of 100 random integers, with values between [1000, 2000):
 
 ```java
-int[] array = mock.ints()
+int[] array = ints()
                   .range(1000, 200)
                   .arrayPrimitive(100)
                   .val();
@@ -1981,7 +2002,7 @@ Translates the existing `MockUnitLocalDate` into a `MockUnit<java.util.Date>`.
 
 Example:
 ```java
-Date date = mock.localDates()
+Date date = localDates()
                   .between(
                      of(2000, 10, 10),
                      of(2020, 10, 10)
@@ -2011,7 +2032,7 @@ Compared to the [`array()`](MockUnit#array) method from `MockUnit<T>` there's no
 Example for creating an array of 100 random Longs, with values between [1000, 2000):
 
 ```java
-Long[] array = mock.longs()
+Long[] array = longs()
                    .range(1000l, 2000l)
                    .array(100)
                    .val();
@@ -2024,7 +2045,7 @@ This method is used to generate a `MockUnit<long[]>` from a `MockUnitLong`.
 Example for creating a primitive array of 100 random longs, with values between [1000l, 2000l):
 
 ```java
-long[] array = mock.longs()
+long[] array = longs()
                    .range(1000, 200)
                    .arrayPrimitive(100)
                    .val();
@@ -2051,7 +2072,7 @@ The easiest way to obtain a MockUnitDays is to call the [`months()`](MockNeat#mo
 Example:
 
 ```java
-String month = mock.months()
+String month = months()
                     .before(JULY)
                     .display(TextStyle.FULL, Locale.CANADA)
                     .val();
@@ -2079,7 +2100,7 @@ Example:
 Example:
 ```java
 // APPEND
-String[] cityAppend = mock.cities()
+String[] cityAppend = cities()
                             .capitals()
                             .append("-001") // To each generated String we append "-001"
                             .array(10)
@@ -2092,7 +2113,7 @@ String[] cityAppend = mock.cities()
 Example:
 ```java
 // ARRAY
-String[] someDays = mock.days()
+String[] someDays = days()
                         .display()
                         .array(10)
                         .val();
@@ -2105,8 +2126,7 @@ String[] someDays = mock.days()
 Example:
 ```java
 // Generate a list of names
-List<String> names = mock
-                     .names()
+List<String> names = names()
                      .first()
                      .format(CAPITALIZED)
                      .list(5)
@@ -2114,8 +2134,7 @@ List<String> names = mock
 // Possible Output: [Carroll, Zane, Alfred, Brent, Loren]
 
 // Using seq() we iterate through the previous list and we encode the strings
-List<String> base64names = mock
-                            .seq(names)
+List<String> base64names = seq(names)
                             .mapToString()
                             .base64()
                             .list(5)
@@ -2129,7 +2148,7 @@ Example
 ```java
 String[] notFriendlyCsv = { "\"", /* OTHERS */};
 
-String friendlyCSV = mock.from(notFriendlyCsv)
+String friendlyCSV = from(notFriendlyCsv)
                          .mapToString()
                          .escapeCsv()
                          .val();
