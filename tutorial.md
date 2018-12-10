@@ -1072,18 +1072,142 @@ Roll = 2, Dice = 3
 */    
 ```
 
-## [`regex()`]
+### [`regex()`](../docs#regex)
 
+This generator acts as an wrapper for [generex](https://github.com/mifmif/Generex), a java library that can generate arbitrary strings matching a certain regular expression.
 
+You shouldn't expect this generator to be a full-featured reverse-regex engine, but most of the simple regex expression will work.
 
-## [`markovs()`]
+Think of this as an "experimental" feature, heavily reliant on a third party.
 
-[`markovs()`](../docs#markovs) is an experimental (for now) implementation of text generated from a Markov Chain. I say experimental because the code is "not yet quite there" in terms of efficiency or flexibility.
+Example for generating 5 phone numbers:
+```java
+regex("\\d{3}-\\d{3}-\\d{4}")
+        .accumulate(5, "\n")
+        .consume(System.out::println);
 
-Nevertheless this generator can be used to create arbitrary text:
+//Output:
+/**
+869-374-6856
+444-775-2444
+443-425-7671
+526-144-6383
+283-454-1700
+*/        
+```
 
-## [`words()`]
+### [`markovs()`](../docs#markovs)
 
+[`markovs()`](../docs#markovs) is an experimental (for now) implementation of text generated from using a [Markov Chain](https://en.wikipedia.org/wiki/Markov_chain). The code is "not yet quite there" in terms of efficiency or flexibility, but it can be used in production without any concerns.
+
+For the moment the library cannot build text from "external sources" (eg.: a .txt file), but you can use the predefined types: `MarkovChainType.LOREM_IPSUM` and `MarkovChainType.KAFKA`.
+
+*Note:* Once the [Markov Chain](https://en.wikipedia.org/wiki/Markov_chain) is created in memory (which can be CPU/Memory intensive for bigger texts), the memory never gets released.
+
+Example for generating [Lorem Ipsum](https://en.wikipedia.org/wiki/Lorem_ipsum) text. Each call generates a different text:
+
+```java
+markovs()
+  .type(MarkovChainType.KAFKA)
+  .consume(System.out::println);
+
+//Output
+/**
+Pulvinar ante. Morbi in dolor lectus. Maecenas et mi vel lorem malesuada hendrerit. Donec id posuere neque. Aliquam pharetra a ex nec congue. Nunc eget bibendum est. Interdum et malesuada fames ac ante ipsum primis in faucibus. Euismod. Massa vivamus nulla. Feugiat. Enim in integer condimentum vel metus dapibus accumsan lobortis vehicula. Enim morbi consequat vestibulum aliquet sit ultrices mi quis. Etiam ligula nulla, sem vel in sed aliquam ligula velit sed porta felis. Quis ante luctus at lorem. Augue sed...
+*/  
+```
+
+Example for generating text using [Frank Kafka - Metamorphosis](https://en.wikipedia.org/wiki/The_Metamorphosis) as the basis. The generated text might be borderline [NSFW](https://www.urbandictionary.com/define.php?term=NSFW) so I wouldn't use this in business contexts:
+
+```java
+markovs()
+        .type(MarkovChainType.KAFKA)
+        .consume(System.out::println);
+
+// Output:
+/**
+Down the face of her own mother than stay anywhere near gregor. She rushed over to it; it was his mother with the chief clerk had already had in mind, she wanted to bend one of the rest of him, might be near to death; he could judge this for himself. Meanwhile, it had even become very quiet in the living room where grete had put on a lot of weight and become very unpleasant for the other hand, he made it difficult to eat a little too small, lay peacefully between its four familiar walls. A collection of tex...
+
+*/        
+```
+
+## [`words()`](../docs#words)
+
+This is a simple text generator that can be used to retrieve arbitrary English words.
+
+The words are divided by their role in the phrase: NOUN, ADVERB, etc.:
+
+Example for generating words:
+
+```java
+String adjective = words().adjectives().get();
+      String adverb = words().adverbs().get();
+      String noun = words().nouns().get();
+      String verb = words().verbs().get();
+
+System.out.printf("adjective=%s\nadverb=%s\nnoun=%s\nverb=%s\n",
+      adjective, adverb, noun, verb);
+
+// Output
+/**
+adjective=piled
+adverb=creatively
+noun=hydrometers
+verb=lunge
+*/      
+```
+
+As a more advanced example we can create an address generator. The rules for the street names are going to be generated are as follows:
+
+* The address contains the street number in the range [1, 600), at the end;
+* The street has a 25% chance of being a `"Lane"`, 25% chance of being a boulevard (`"Blvd."`) and 50% chances of being simply `"Street"`;
+* The street name has a 25% of being composed from Adjective + Noun, and 75% chances of being only a Noun.
+
+The example will combine `ints()`, `words()`, `fmt()` and `probabilities()` for generating the desired result:
+
+```java
+MockUnitString addressGenerator =
+                fmt("#{adj}#{noun} #{suffix} #{nr}")
+                    .param("adj", probabilities(String.class)
+                                            .add(0.25, words()
+                                                        .adjectives()
+                                                        .format(CAPITALIZED)
+                                                        .append(" ")
+                                            )
+                                            .add(0.75, "")
+                                            .mapToString()
+                    )
+                    .param("noun", words().nouns().format(CAPITALIZED))
+                    .param("suffix", probabilities(String.class)
+                                      .add(0.25, "Lane")
+                                      .add(0.25, "Blvd.")
+                                      .add(0.50, "Street")
+                                      .mapToString())
+                    .param("nr", ints().range(1, 600));
+
+addressGenerator
+  .accumulate(30, "\n")
+  .consume(System.out::println);
+
+// Output:
+/**
+Saprobes Lane 130
+Rhenium Street 321
+Grained Mainliners Street 466
+Tops Beliefs Street 184
+Ain Quatrefoil Street 159
+Nobbler Lane 190
+Screwed Skelf Lane 348
+Pomologist Street 127
+Squash Lane 398
+Inherited Carse Street 448
+Garotte Blvd. 46
+Cays Lane 364
+Raised Numismatics Blvd. 548
+*/
+```
+
+PS: Take care of the words generated, some of them might be slightly *[NSFW](https://www.urbandictionary.com/define.php?term=NSFW)*.
 
 ## User Data Generators
 
