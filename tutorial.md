@@ -1244,3 +1244,279 @@ fmt("{email='#{email}', pass='#{pass}'}")
 {email='piquebore@aol.com', pass='compote'}
 */
 ```
+
+# Composing Objects
+
+Creating object generators with **mockneat** can be done in 4 ways:
+- Reflection: setting fields directly (`reflect()`), calling a constructor (`constructor()`) or a static factory method (`factory()`);
+- Through setters using lambda expressions (`filler()`).
+
+## [filler()](../docs#filler)
+
+This is the preferred way of creating custom `MockUnit<T>` generators for any given type `<T>`. The only limitation is that setters need to be available (declared as `public`).
+
+Let's take for example a simple [POJO](https://en.wikipedia.org/wiki/Plain_old_Java_object) called `User`:
+
+```java
+public class User {
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String middleName;
+    private Date birthDate;
+    private String email;
+
+    public User() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    // ++ Additional Getters And Setters for all the fields
+    // ++ a nicely implemente toString() method
+}
+```
+
+Creating an `User` generator (`MockUnit<User>`) with `filler()` is as simple as:
+
+```java
+/**
+* This method is used to create an email from a firstName and a lastName.
+* All emails generated belong to "@company.com"
+*/
+BiFunction<String, String, String> emailComposer = (firstName, lastName) -> {
+    String fName = firstName.toLowerCase();
+    String lName = lastName.toLowerCase();
+
+    return fName +
+           chars().from(new char[]{'_', '.'}).get() + // the names are separated with "." or "_"
+           lName +
+           ints().bound(100).get() + // additional numbers are added after the lastName
+           "@company.com";
+};
+
+/**
+* Creating the user generator
+*/
+MockUnit<User> userGenerator =
+               filler(() -> new User())
+                       .setter(User::setFirstName, names().first())
+                       .setter(User::setLastName, names().last())
+                       .setter(User::setMiddleName, names().first())
+                       .setter(User::setId, uuids())
+                       .setter(User::setBirthDate, localDates().toUtilDate())
+                       .map(user -> {
+                           user.setEmail(emailComposer.apply(user.getFirstName(), user.getLastName()));
+                           return user;
+                       });
+```
+
+As you can see this strategy doesn't involve any "magic". The `filler()` method expects a `Supplier<User>` (we are going to use the `No Args` constructor of the POJO), then we need to reference each setter and the associated generator (`MockUnit<T>`).
+
+The `userGenerator` can then be used to create `User` objects:
+
+```java
+/** Creates a single user */
+User someUser = userGenerator.get();
+
+/** Creates a List of 10 user */
+List<User> users = userGenerator.list(10).get();
+
+/** Prints 10 users on the console (System.out) */
+userGenerator
+  .mapToString() // Calls the (toString() method on each User - needs to be implemented)
+  .accumulate(10, "\n")
+  .consume(System.out::println);
+
+// Output
+/**
+User{id='936946ef-0407-441c-bd13-56998e934781', firstName='Luana', lastName='Bontempo', middleName='Lincoln', birthDate=Sun Mar 18 00:00:00 EET 1979, email='luana.bontempo48@company.com'}
+User{id='c84930a6-a9cf-45da-982c-a76e6f23928d', firstName='Paulina', lastName='Rina', middleName='Norbert', birthDate=Wed Jan 10 00:00:00 EET 1973, email='paulina.rina48@company.com'}
+User{id='e9d19b1b-4e3b-4c34-a54f-c8bd880d0e0b', firstName='Rosie', lastName='Staack', middleName='Gilbert', birthDate=Wed Dec 25 00:00:00 EET 1985, email='rosie.staack25@company.com'}
+User{id='b0824444-86c6-4984-a820-0adca34ea829', firstName='Eryn', lastName='Burchfiel', middleName='Lanny', birthDate=Thu Sep 21 00:00:00 EET 1972, email='eryn.burchfiel62@company.com'}
+User{id='c34631f1-1ea7-4a74-a8ac-276fa5787ba3', firstName='Louise', lastName='Kallus', middleName='Nathan', birthDate=Wed May 31 00:00:00 EEST 1989, email='louise.kallus41@company.com'}
+User{id='d3791c93-fe6e-4d12-8109-5b4aece9c25a', firstName='Tressie', lastName='Andrson', middleName='Leroy', birthDate=Wed Nov 09 00:00:00 EET 2016, email='tressie.andrson31@company.com'}
+User{id='8c170122-8db3-4fb5-ae29-a42eff2b8a89', firstName='Dixie', lastName='Piggee', middleName='Heriberto', birthDate=Sat Apr 13 00:00:00 EEST 2002, email='dixie.piggee40@company.com'}
+User{id='a0f74109-b468-4933-8907-b573de66ba7d', firstName='Adelle', lastName='Pecinousky', middleName='Reuben', birthDate=Fri Apr 12 00:00:00 EEST 2013, email='adelle.pecinousky94@company.com'}
+User{id='23e8b4ca-8b83-45ef-a670-8f23c93a25cc', firstName='Ivette', lastName='Rodillas', middleName='Van', birthDate=Tue Nov 29 00:00:00 EET 2005, email='ivette_rodillas36@company.com'}
+User{id='16ca3877-636e-4a21-9d12-ada0248e7038', firstName='Corrine', lastName='Eichner', middleName='Sylvester', birthDate=Mon Jan 27 00:00:00 EET 2003, email='corrine_eichner17@company.com'}
+*/  
+```
+
+## [constructor()](../docs#constructor)
+
+This is an alternative way for creating Object (`<T>`) generators (`MockUnit<T>`).
+
+Internally the method uses reflection trying to to match the supplied list of `MockUnit<T1>, MockUnit<T2>..., MockUnit<Tn>` generators with a class constructor that accepts a list of arguments `<T1>, <T2>, ..., <Tn>`.
+
+The safest scenario when this generator can be used is when the POJO has an All Args Constructor defined.
+
+For example for the `User` class:
+
+```java
+public class User {
+
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String middleName;
+    private Date birthDate;
+    private String email;
+
+    // The All Args Constructor <String, String, String, String, Date, Email>
+    public User(String id, String firstName, String lastName, String middleName, Date birthDate, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.birthDate = birthDate;
+        this.email = email;
+    }
+
+    // ++ Getters and Setters (they are not really relevant for this example)
+    // ++ A nice toString() implementation
+}
+```
+
+The generator can be created like this:
+
+```java
+MockUnit<User> ctrUserGenerator =
+               constructor(User.class).params(
+                   uuids(), // MockUnitString -> matches String
+                   names().first(), // MockUnitString -> matches String
+                   names().last(), // MockUnitString -> matches String
+                   names().first(), // MockUnitString -> matches String
+                   localDates().toUtilDate(), // MockUnit<Date> -> matches Date
+                   emails().domain("company.com") // MockUnitString -> matches String
+               );
+```
+
+And then it can be used to generate actual `User` objects like this:
+
+```java
+// Generates a single user
+User ctrUser = ctrUserGenerator.get();
+
+// Generates a Set of users
+Set<User> ctrUsersSet = ctrUserGenerator.set(10).get();
+
+// Prints 2 Users on the console (System.out)
+ctrUserGenerator
+            .mapToString()
+            .accumulate(2, "\n")
+            .consume(System.out::println);
+
+// Output
+/**
+User{id='9b0a8f06-b74b-4048-a2f9-78379ad9eb06', firstName='Bill', lastName='Mordino', middleName='Milton', birthDate=Tue Feb 08 00:00:00 EET 1972, email='gibbedpouche@company.com'}
+User{id='785ab49d-e359-4953-8ac1-dc648e7213a8', firstName='Courtney', lastName='Rieff', middleName='Wilfredo', birthDate=Mon Oct 25 00:00:00 EEST 1999, email='hookedmarc@company.com'}
+*/            
+```
+
+## [`factory()`](../docs#factory)
+
+Objects are not always created directly through constructors, in this case the easiest way to create an arbitrary `Object <T>` generator is to use the [`factory()`](../docs#factory) method.
+
+Let's say that our `User` object doesn't have an accessible constructor outside the package where it was defined:
+
+```java
+public class User {
+
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String middleName;
+    private Date birthDate;
+    private String email;
+
+    // The only constructor is not accesible
+    protected User() {
+    }
+
+    // ++ more code here
+}
+```
+
+An `UserFactory` class exists in the same package as `User` and it contains a **static** method to create `User` objects:
+
+```java
+public class UserFactory {
+    public static User createUser(String id, String firstName, String lastName, String middleName, Date birthDate, String email) {
+        User user = new User();
+
+        user.setId(id);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setMiddleName(middleName);
+        user.setBirthDate(birthDate);
+        user.setEmail(email);
+
+        return user;
+    }
+}
+```
+
+In this case the solution will be to call the `factory(targetClass, factoryClass)`:
+
+```java
+// Print an arbitrary user to console (System.out)
+factory(User.class, UserFactory.class)
+                .method("createUser") // Invoked through reflection
+                .params(
+                        uuids(),
+                        names().first(),
+                        names().last(),
+                        names().first(),
+                        localDates().toUtilDate(),
+                        emails().domain("company.com")
+                )
+                .consume(System.out::println);
+
+//Output
+/**
+User{id='14a55707-83e2-4b44-9793-5b6bfa6b72ee', firstName='Ramon', lastName='Edeker', middleName='Marcel', birthDate=Sun May 14 00:00:00 EEST 2006, email='trussedmarquis@company.com'}
+*/                
+```                
+
+## [`reflect()`](../docs#reflect)
+
+As the name suggest [`reflect()`](../docs#reflect) use reflection at field level to create objects. A No Args constructor should exist on the class, otherwise the object cannot be created.
+
+```java
+public class User {
+
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String middleName;
+    private Date birthDate;
+    private String email;
+
+    // Should be available!
+    public User() {
+    }
+}
+```
+
+The simplest way to create a generator in this case is to:
+
+```java
+MockUnit<User> rUserGenerator =
+reflect(User.class)
+    .field("id", uuids())
+    .field("firstName", names().first())
+    .field("lastName", names().last())
+    .field("middleName", names().first())
+    .field("birthDate", localDates().toUtilDate())
+    .field("email", emails());
+
+System.out.println(rUserGenerator.get());
+```
+
+Setters are not used in this case, the values are "forced" at field level.

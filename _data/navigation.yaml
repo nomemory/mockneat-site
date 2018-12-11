@@ -60,6 +60,17 @@ tutorial:
           url: /tutorial#text-generators
         - title: "User Data Generators"
           url: /tutorial#user-data-generators
+  - title: "Composing Objects"
+    url: /tutorial#composing-objects
+    children:
+        - title: "filler()"
+          url: /tutorial#filler
+        - title: "constructor()"
+          url: /tutorial#constructor
+        - title: "factory()"
+          url: /tutorial#factory
+        - title: "reflect()"
+          url: /tutorial#reflect
 
 docs:
   - title: "data generators"
