@@ -2,7 +2,7 @@
 layout: single
 permalink: /tutorial/
 classes: wide
-title: tutorial
+title: Tutorial
 sidebar:
   nav: "tutorial"
 ---
@@ -10,6 +10,34 @@ sidebar:
 This tutorial is intended to describe the ways of working with **mockneat**. It's definitely not a comprehensive description of the various APIs and their usage. For this please check the [official docs](../docs).
 
 *Disclaimer*: www.mockneat.com is a [Jekyll site](https://jekyllrb.com) and it's [open source](https://github.com/nomemory/mockneat-site), so if you see any code errors or you have any suggestions in the approach, explanations, etc. please open a PR. Also English is not my native-language, so "grammer" <sup>sigh</sup> mistakes are inherent and anxious to be corrected.
+
+# Table of contents:
+
+* [The MockNeat class](/tutorial#creating-mockneat-objects)
+* [MockNeat as an enhanced Random for:](/tutorial#mockneat-as-an-enhanced-random)
+    - [Booleans](/tutorial#booleans)
+    - [Chars](/tutorial#chars)
+    - [Ints](/tutorial#ints)
+    - [Doubles](/tutorial#doubles)
+    - [Longs and floats](/tutorial#longs-and-floats)
+    - [Strings](/tutorial#strings)
+    - [Dates](/tutorial#dates)
+* [Everything is a `MockUnit<T>`](/tutorial#everything-is-a-mockunitt)
+    - [Closing Methods](/tutorial#closing-methods)
+    - [Transformer Methods](/tutorial#transformer-methods)
+* [The `MockUnitString`](/tutorial#the-mockunitstring)
+* [More than an enhanced Random](/tutorial#more-than-an-enhanced-random)
+    - [Address Generators](/tutorial#address-generators)
+    - [Financial Generators](/tutorial#financial-generators)
+    - [Internet Data Generators](/tutorial#internet-data-generators)
+    - [Sequence Generators](/tutorial#sequence-generators)
+    - [Text Generators](/tutorial#text-generators)
+    - [User Data Generators](/tutorial#user-data-generators)
+* [Composing Objects](/tutorial#composing-objects)
+  - [`filler()`](/tutorial#filler)
+  - [`constructor()`](/tutorial#constructor)
+  - [`factory()`](/tutorial#factory)
+  - [`reflect()`](/tutorial#reflect)
 
 # The `MockNeat` class
 
@@ -1520,3 +1548,76 @@ System.out.println(rUserGenerator.get());
 ```
 
 Setters are not used in this case, the values are "forced" at field level.
+
+# Generating CSV files
+
+There is not a single way to generate [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) files. A few alternatives exists.
+
+One may use a combination of `fmt()` and `accumulate()`, like in the following example:
+
+```java
+fmt("#{id}, #{fullName}, #{someCode}")
+            .param("id", uuids())
+            .param("fullName", names().full().escapeCsv())
+            .param("someCode", fmt("#{prefix}#{num}")
+                                        .param("prefix", chars().lowerLetters())
+                                        .param("num", ints().range(0, 100))
+            )
+            .accumulate(10, "\n")
+            .consume(str -> { /* write string to disk */ });
+```
+
+And if we `cat` the resulting file, the content might look like:
+
+```
+ff13215f-da88-45c5-b77d-38ef02c1b13e, Annemarie Paramore, v60
+dcfa9478-d36e-436c-ba53-2a89b1ff0fe6, Paul Giacomini, c86
+607b462b-f173-4ee6-a569-4a4422698704, Malcolm Adey, k14
+e3005ced-47ec-451c-8b5e-d0f0960e2b48, Nichol Hausteen, y34
+d7961c05-c58a-4144-afeb-53eb6722c46b, Wesley Blyther, y58
+2d101477-307b-48ee-8271-8cbd289755dc, Adalberto Macleod, l71
+84269fdf-e0a3-4d4f-9d65-fdeb123da4f2, Jessika Horwitz, e84
+7055aff8-3539-4d01-b7cb-247be5cdbab6, Jackson Hibdon, y90
+3d79d066-f2eb-4ba8-95de-745d0bdba351, Patrick Carignan, b10
+2f2a48c3-724c-4f91-a237-a5462060ae44, Lanette Steidel, u17
+```
+
+A more concise way of achieving the same results is to use directly the [`csvs()`](../docs#csvs) generator. This is also the safest way o generating valid CSVs - **the text is escaped by default** (check the last column from the following example):
+
+```java
+String csv = csvs()
+              .column(intSeq())
+              .column(names().first())
+              .column(names().last())
+              .column(emails())
+              .column(money().locale(Locale.GERMANY).range(1000, 5000))
+              .separator("|")
+              .accumulate(20, "\n")
+              .get();
+
+System.out.println(csv)                         
+
+// Output
+/**
+0|Hal|Gannett|grouserefugio@live.com|"2.907,94 €"
+1|Ricardo|Kirsch|thankfuldolan@gmail.com|"3.123,97 €"
+2|Nolan|Inglis|webbedjustina@yahoo.co.uk|"3.418,80 €"
+3|Sonny|Pareja|wrothjuliana@hotmail.com|"1.041,76 €"
+4|Roscoe|Matuszak|snubkeisha@mail.com|"1.645,30 €"
+5|Gaston|Hammill|fraughtbruno@hotmail.com|"3.645,93 €"
+6|Deshawn|Majercin|fireproofmacqueen@hotmail.com|"4.944,91 €"
+7|Jamel|Brodnax|chastekauder@comcast.net|"4.914,91 €"
+8|Elliott|Peron|chirkemerita@email.com|"4.604,48 €"
+9|Lance|Latina|voguemoths@mac.com|"2.662,07 €"
+10|Travis|Rusert|rushdemetrice@att.net|"3.387,07 €"
+11|Norris|Amadio|squintfelicia@email.com|"3.889,18 €"
+12|Elisha|Brawley|nextwilber@mail.com|"2.522,31 €"
+13|Barton|Bosko|pouchedfrederick@mac.com|"2.433,39 €"
+14|Herschel|Dotstry|slumsade@yahoo.co.uk|"4.930,66 €"
+15|Ashley|Dorenfeld|sorecarlo@comcast.net|"2.734,22 €"
+16|Eric|Cheli|kraalchristi@me.com|"3.498,07 €"
+17|Norberto|Arechiga|milledstupes@comcast.net|"3.908,81 €"
+18|Marco|Berenguer|seenausiello@verizon.net|"3.280,29 €"
+19|Douglas|Kerley|boullemerilyn@mail.com|"2.609,39 €"
+*/
+```                         

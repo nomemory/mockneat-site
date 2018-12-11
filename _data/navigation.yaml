@@ -71,6 +71,8 @@ tutorial:
           url: /tutorial#factory
         - title: "reflect()"
           url: /tutorial#reflect
+  - title: "Generating CSV files"
+    url: "/tutorial#generating-csv-files"
 
 docs:
   - title: "data generators"
