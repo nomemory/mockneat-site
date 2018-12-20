@@ -71,8 +71,14 @@ tutorial:
           url: /tutorial#factory
         - title: "reflect()"
           url: /tutorial#reflect
-  - title: "Generating CSV files"
-    url: "/tutorial#generating-csv-files"
+  - title: "More Formatted Data"
+    children:
+       - title: "CSV"
+         url: /tutorial#csv
+       - title: "JSON and XML"
+         url: /tutorial#json-and-xml
+       - title: "SQL Inserts"
+         url: /tutorial#sql-inserts
 
 docs:
   - title: "data generators"

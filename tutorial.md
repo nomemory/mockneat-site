@@ -38,6 +38,7 @@ This tutorial is intended to describe the ways of working with **mockneat**. It'
   - [`constructor()`](/tutorial#constructor)
   - [`factory()`](/tutorial#factory)
   - [`reflect()`](/tutorial#reflect)
+* [Generating CSV Files](/tutorial#generating-csv-files)
 
 # The `MockNeat` class
 
@@ -555,6 +556,7 @@ Equivalent methods exist for all the other enhanced `MockUnits`:
 * [`mapToDouble(...)`](../docs#maptodouble) to transform an existing `MockUnit<T>` into a `MockUnitDouble`;
 * [`mapToInt(...)`](../docs#maptoint) to transform an existing `MockUnit<T>` into a `MockUnitInt`;
 * [`mapToLong(...)`](../docs#maptolong) to transform an existing `MockUnit<T>` into a `MockUnitLong`;
+* [`mapToLocalDate(...)`](../docs#maptolocaldate) to transform an existing `MockUnit<T>` into a `MockUnitLocalDate`;
 
 The `map(Function<T1, T2>)` doesn't impose any restriction over the types. `T1` can be similar with `T2`. In this case the `MockUnit` will not be translated into something else (from the type perspective).
 
@@ -1547,13 +1549,61 @@ reflect(User.class)
 System.out.println(rUserGenerator.get());
 ```
 
-Setters are not used in this case, the values are "forced" at field level.
+Setters are not used in this case, the values are "forced" at field level. It's important to remember this in case setters contain their own logic (which shouldn't be the case most of the times), because that logic/code will never be called.
 
-# Generating CSV files
+By default, an unspecified `field()` remains `null`. If the actual data is not important, but the field needs to be populated with "something", default data generators can be enabled with `useDefaults(true)`:
+
+```java
+MockUnit<User> rUserGenerator = reflect(User.class)
+                                            .useDefaults(true);
+
+System.out.println(rUserGenerator.get());
+
+// Output
+/**
+User{id='MbA0Ceett9bIxsAcbggNa0LsDyKrOANf', firstName='41U8JJKtklOAYHZJ07tz3BFoePocUpFH', lastName='L8oiM0bPU2PoMMtAPwpzlpbZJB9tWf9n', middleName='YBbMC8ZSROnErZdL6RuxXRja5e657Gz6', birthDate=null, email='UwaYRbPfEfJFjHL5HsJCD2B8EnbAYMTO'}
+*/
+```
+
+Default data generators exist for the following types (and their wrappers if that's the case):
+
+| Type | Data Generator |
+| ---- | -------------- |
+| `boolean` or `Boolean` | `mockNeat.bools()` |
+| `char` or `Character` | `mockNeat.chars().letters()` |
+| `double` or `Doubles` | `mockNeat.doubles().bound(10)` |
+| `float` or `Float`  | `mockNeat.floats().bound(10)` |
+| `int` or `Integer`  | `mockNeat.ints().bound(100)` |
+| `long` or `Long`   | `mockNeat.longs().bound(100)` |
+| `short` or `Short`  | `mockNeat.ints().bound(100).map(Integer::shortValue)` |
+| `String`  | `mockNeat.strings().size(32)` |
+
+In the previous example, the `birthDate=null`. This happens because by default there's no default generator associated with the `Date.class`.
+
+Adding new default generators or overriding existing ones can be done by calling `type(Class<T1> cls, MockUnit<T1> mockUnit)`.
+
+For example if we want to populate the `Date` fields by default with something, we can write something like this:
+
+```java
+MockUnit<User> rUserGenerator = reflect(User.class)
+                                            .useDefaults(true)
+                                            .type(Date.class, localDates().thisYear().toUtilDate());
+
+System.out.println(rUserGenerator.get());
+
+// Output
+/**
+User{id='eQ2kHfNsB3JUyGZsGzY8G0eD6knmy3CE', firstName='DkBb98qPh4aWxJwFf8DH6TPfuMbOuiUq', lastName='qjWlN7cECvsWdBAse0gHmobxW2lVI8GG', middleName='M3WZmHtHgrNeFV8chxm1z6n9PpHA8YlO', birthDate=Wed Apr 11 00:00:00 EEST 2018, email='DWLqd2tcqXZohIhLRi9SsjUMIoUBw5JW'}
+*/
+```
+
+# More formatted data
+
+## CSV
 
 There is not a single way to generate [CSV](https://en.wikipedia.org/wiki/Comma-separated_values) files. A few alternatives exists.
 
-One may use a combination of `fmt()` and `accumulate()`, like in the following example:
+One may use a combination of [`fmt()`](../docs#fnt) and [`accumulate()`](../docs#accumulate), like in the following example:
 
 ```java
 fmt("#{id}, #{fullName}, #{someCode}")
@@ -1582,7 +1632,9 @@ d7961c05-c58a-4144-afeb-53eb6722c46b, Wesley Blyther, y58
 2f2a48c3-724c-4f91-a237-a5462060ae44, Lanette Steidel, u17
 ```
 
-A more concise way of achieving the same results is to use directly the [`csvs()`](../docs#csvs) generator. This is also the safest way o generating valid CSVs - **the text is escaped by default** (check the last column from the following example):
+A more concise way of achieving the same results is to use directly the [`csvs()`](../docs#csvs) generator.
+
+This is probably the safest and preferred way of generating valid CSVs because each column has it's content escaped by default, and there's no need to explicitly call `escapeCsv()`:
 
 ```java
 String csv = csvs()
@@ -1603,21 +1655,132 @@ System.out.println(csv)
 1|Ricardo|Kirsch|thankfuldolan@gmail.com|"3.123,97 €"
 2|Nolan|Inglis|webbedjustina@yahoo.co.uk|"3.418,80 €"
 3|Sonny|Pareja|wrothjuliana@hotmail.com|"1.041,76 €"
-4|Roscoe|Matuszak|snubkeisha@mail.com|"1.645,30 €"
-5|Gaston|Hammill|fraughtbruno@hotmail.com|"3.645,93 €"
-6|Deshawn|Majercin|fireproofmacqueen@hotmail.com|"4.944,91 €"
-7|Jamel|Brodnax|chastekauder@comcast.net|"4.914,91 €"
-8|Elliott|Peron|chirkemerita@email.com|"4.604,48 €"
-9|Lance|Latina|voguemoths@mac.com|"2.662,07 €"
-10|Travis|Rusert|rushdemetrice@att.net|"3.387,07 €"
-11|Norris|Amadio|squintfelicia@email.com|"3.889,18 €"
-12|Elisha|Brawley|nextwilber@mail.com|"2.522,31 €"
-13|Barton|Bosko|pouchedfrederick@mac.com|"2.433,39 €"
-14|Herschel|Dotstry|slumsade@yahoo.co.uk|"4.930,66 €"
-15|Ashley|Dorenfeld|sorecarlo@comcast.net|"2.734,22 €"
-16|Eric|Cheli|kraalchristi@me.com|"3.498,07 €"
-17|Norberto|Arechiga|milledstupes@comcast.net|"3.908,81 €"
-18|Marco|Berenguer|seenausiello@verizon.net|"3.280,29 €"
-19|Douglas|Kerley|boullemerilyn@mail.com|"2.609,39 €"
+....
 */
-```                         
+```
+
+`csv()` offers a shortcut `write(fileName)` method that will allow the user to persist the data directly on the disk.
+
+In case the file cannot be written on the disk, an `UncheckedIOException` will be thrown:
+
+```java
+csvs()
+  .column(intSeq())
+  .column(names().first())
+  .column(names().last())
+  .column(emails())
+  .column(money().locale(Locale.GERMANY).range(1000, 5000))
+  .separator("|")
+  .write("filename1.csv", 100); // HERE!
+```
+
+```
+> cat filename1.csv
+
+0|Monte|Probasco|thrumutch@hotmail.com|"2.734,62 €"
+1|Harrison|Adebisi|densestschipper@yahoo.com|"4.006,14 €"
+2|Kristofer|Tavolieri|dreadsporters@yahoo.co.uk|"3.937,35 €"
+3|Royce|Magpusao|auldlino@live.com|"1.532,08 €"
+4|Reinaldo|Montori|chasmicdecos@gmx.com|"3.523,23 €"
+5|Leonel|Waack|eastwardrousts@comcast.net|"3.835,48 €"
+6|Rex|Pyo|pinguiddillaman@msn.com|"2.122,81 €"
+7|Perry|Panagos|miffedpop@yahoo.co.uk|"3.201,20
+
+...more
+```
+
+## JSON and XML
+
+Arbitrary json (or XML) data can be obtained without any specialised generator.
+
+The sole idea is to create an `Object` through [`filler()`](#filler), [`constructor()`](#constructor), [`factory`](#factory) or [`reflect()`](#reflect) and the use a third party JSON/XML library and `map()`. My library of choice when it comes to JSON is [gson](https://github.com/google/gson) and for XML it's JAXB.
+
+This come with an apparent limitation, a set of additional classes should be created (if they don't exist) to represent the JSON structure.
+
+Example:
+
+```java
+private static class User {
+    String firstName;
+    String lastName;
+    String email;
+    String creditCard;
+
+    // Constructors
+    // Getters and Setters
+}
+```
+
+We will start by defining the actual Object (`User`) generator `MockUnit<User>`. The preferred way of creating this should be [`filler()`](#filler).
+
+
+```Java
+MockUnit<User> generator = filler(() -> new User())
+                .setter(User::setFirstName, names().first())
+                .setter(User::setLastName, names().last())
+                .setter(User::setEmail, emails())
+                .setter(User::setCreditCard, creditCards().type(VISA_16));
+```
+
+Then same generator can be reused for both JSON:
+
+```java
+// Create JSON
+Gson gson = new GsonBuilder()
+                  .setPrettyPrinting()
+                  .create();
+
+generator
+  .map(gson::toJson)
+  .consume(System.out::println);
+
+// Output
+/**
+{
+  "firstName": "Frank",
+  "lastName": "Bambrick",
+  "email": "renthugh@hotmail.co.uk",
+  "creditCard": "4857279349007472"
+}
+*/
+```
+
+And XML:
+
+```java
+final Marshaller jaxbMarshaller = newInstance(User.class, User.class)
+               .createMarshaller();
+
+jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+Function<User, String> toXML = (users) -> {
+  StringWriter productsWriter = new StringWriter();
+  try {
+    jaxbMarshaller.marshal(users, productsWriter);
+  } catch (JAXBException e) {
+    e.printStackTrace();
+  }
+  return productsWriter.toString();
+};
+
+generator
+  .map(toXML)
+  .consume(System.out::println);
+
+// Output
+/**
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<user>
+    <creditCard>4783503103187272</creditCard>
+    <email>baccatetew@att.net</email>
+    <firstName>Geraldo</firstName>
+    <lastName>Cler</lastName>
+</user>
+*/  
+```
+
+Note: In order to make the above example work, the `User` class needs to be decorated with the `@XMLRootElement` annotation (from JAXB).
+
+## SQL Inserts
+
+TODO
