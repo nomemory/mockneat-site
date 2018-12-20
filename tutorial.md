@@ -38,7 +38,10 @@ This tutorial is intended to describe the ways of working with **mockneat**. It'
   - [`constructor()`](/tutorial#constructor)
   - [`factory()`](/tutorial#factory)
   - [`reflect()`](/tutorial#reflect)
-* [Generating CSV Files](/tutorial#generating-csv-files)
+* [More Formatted Data](/tutorial#csv)
+  - [CSV](/tutorial#csv)
+  - [JSON and XML](/tutorial#json-and-xml)
+  - [SQL Inserts](/tutorial#sql-inserts)
 
 # The `MockNeat` class
 
