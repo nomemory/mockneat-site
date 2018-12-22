@@ -11,7 +11,7 @@ sidebar:
 
 The library is *free* and *open-source*, so the the latest version can be built directly from the [source code](#sources).
 
-*Note*: There is also a Maven Central mirror, but I recommend you to use the jcenter() repository if possible.
+*Note*: There is also an (**outdated**) Maven Central mirror, but I recommend you to use the jcenter() repository if possible, especially for the latest versions and patches.
 
 #### **maven**
 

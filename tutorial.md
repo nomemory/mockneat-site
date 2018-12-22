@@ -7,9 +7,9 @@ sidebar:
   nav: "tutorial"
 ---
 
-This tutorial is intended to describe the ways of working with **mockneat**. It's definitely not a comprehensive description of the various APIs and their usage. For this please check the [official docs](../docs).
+This tutorial is intended to describe the ways of working and the most important features of **mockneat**. It's not a long read and it should take less than a few hours. I would also suggest running the examples as you go.
 
-*Disclaimer*: www.mockneat.com is a [Jekyll site](https://jekyllrb.com) and it's [open source](https://github.com/nomemory/mockneat-site), so if you see any code errors or you have any suggestions in the approach, explanations, etc. please open a PR. Also English is not my native-language, so "grammer" <sup>sigh</sup> mistakes are inherent and anxious to be corrected.
+For a comprehensive description of the the various APIs and their usage it's recommended to check the [official docs](../docs).
 
 # Table of contents:
 
@@ -119,7 +119,7 @@ It's highly recommended to avoid creating multiple `MockNeat` instances. It's be
 
 Internally the `MockNeat.class` wraps a java `Random` implementation and offers a powerful API for generating arbitrary values for primitive ([`boolean`](#booleans), [`chars`](#chars), [`ints`](#ints), [`doubles`](#doubles), etc.), `String`, `LocalDate`, `Day` and `Month` types.
 
-After creating any of the [data generators](../docs#datagenerators) (also called a `MockUnit<Type>`s) you always have to call [`get()`](../docs#get) in order to obtain the actual value. **mockneat** works in a lazy way, no value will be generated until explicitly calling the "closer" `get()`.
+After creating any of the [data generators](../docs#datagenerators) (also called a `MockUnit<Type>`s) you always have to call [`get()`](../docs#get) in order to obtain the actual value. **mockneat** works in a lazy way, no value will be generated until explicitly calling the "closing" method `get()` (or `val()`).
 
 *Note*: Older examples you can find on the Internet might be using [`val()`](../docs#val) instead of `get()`. `get()` is just an alias which was introduced later, starting with version `0.2.5`. The reason for this addition is simple, `val` is a restricted keyword in some JVM languages (eg.: Scala).
 
@@ -183,15 +183,15 @@ char an1 = chars().alphaNumeric().get();
 char an2 = chars().type(ALPHA_NUMERIC).get();
 ```
 
-All of the methods `digits()`, `letters()`, `hex()` etc. are shortcuts for the `type(CharsType)` method.
-
-In case you want to combine different types but in the same time exclude others, you can use the `types(CharTypes...)` method.
+All of the methods `digits()`, `letters()`, `hex()` etc. are shortcuts for the `type(CharsType)` method. In case you want to combine different types but in the same time exclude others, you can use the `types(CharTypes...)` method.
 
 For example the following code will be generating either a lower letter or digit (but not an upper letter):
 
 ```java
 char lowerLetterOrDigit = chars().types(LOWER_LETTERS, DIGITS).get();
 ```
+
+*Note:* The `type()/types()/shortcut methods` "pattern" will be found "across" the library.
 
 ## Ints
 
@@ -258,6 +258,31 @@ for (int i = 0; i < 10; i++) {
 0 0 0 1 0 0 0 0 1 1
 */
 ```
+
+The above can be re-written using a more *mockneat-ish* approach:
+
+```java
+final int rows = 5;
+final int cols = 8;
+
+Integer[] possibleValues = {0, 1};
+
+Consumer<Integer[][]> prettyPrint = (ints) -> {
+  for (int i = 0; i < rows; i++) {
+    for(int j = 0; j < cols; j++) {
+      System.out.print(ints[i][j] + " ");
+    }
+    System.out.println();
+  }
+};
+
+fromInts(possibleValues)
+  .array(() -> new Integer[cols])
+  .array(() -> new Integer[rows][])
+  .consume(prettyPrint);
+```
+
+It's normal if you are not familiar with the above syntax. Think of this as a "sneak-peek" into the libraries' features that are going to be presented later.
 
 ## Doubles
 
@@ -387,9 +412,10 @@ After reading the next chapter, the "magic" behind `toUtilDate()` will more obvi
 
 # "Everything" is a `MockUnit<T>`
 
-The rule of thumbs is that every [data generator](../docs#datagenerators) from `MockNeat` is a `MockUnit<T>`.
+The rule of thumbs is that every [data generator](../docs#datagenerators) from `MockNeat` is a `MockUnit<T>`, where `<T>` represents the type of the data being generated and `MockUnit` is a `@FunctionalInterface` that comes with a few handy `default` methods.
 
-Calling `chars()` without the closing method (`get()` or `val()`) returns a `MockUnit<Character>`.
+For example, calling `chars()` without the closing method (`get()` or `val()`) returns a `MockUnit<Character>`.
+
 ```java
 MockUnit<Character> asAMockUnit = chars();
 ```
@@ -397,7 +423,17 @@ MockUnit<Character> asAMockUnit = chars();
 
 For certain data types more specialised interfaces exists. For example [`ints()`](../docs#ints) returns an `Ints` data generator, which is an implementation of `MockUnitInt`, which is actually an extension for `MockUnit<Integer>` that adds additional benefits (read *more methods*).
 
-`MockUnit`s are powerful mechanisms that allow developers to generate data incrementally, by defining broader behaviours that can be reused/transformed in different scenarios.
+The same goes for `MockUnitString` which is an extension of `MockUnit<String>` or `MockUnitLocalDate` which is an extension for `MockUnit<LocalDate>`.
+
+```java
+MockUnit<String> genericStringGenerator = strings();
+
+// OR
+
+MockUnitString smarterStringGenerator = strings();
+```
+
+In short, `MockUnit`s are powerful mechanisms that allow developers to generate data incrementally, by defining broader behaviours that can be reused/transformed later, under different circumstances.
 
 For example we define an `ints()` generator (`MockUnitInt`) that generates numbers between `[0, 100)`.
 
@@ -439,7 +475,7 @@ System.out.println(list2);
 */
 ```
 
-`mapToString()`, `map()` and `list(...)` are what we call *"transformers"* (`default` generic methods defined in the `MockUnit<T>` interface).
+`mapToString()`, `map()` and `list(...)` are what we call *"transformers"*, `default` generic methods defined in the `MockUnit<T>` interface.
 
 More precisely `mapToString()` is transforming the `MockUnitInt` generator into a new generator `MockUnitString`, which will generate `String` values obtained from integers in the range <sup>yes, exactly</sup>`[0, 100)`.
 
@@ -467,7 +503,14 @@ Data generators are lazy by nature. That's why we can split the methods associat
 * **Transformers**: methods that are incrementally changing the behaviour of the `MockUnit<T>` without actually computing any data. (Eg.: `map(...)`, `list(...)`, etc.);
 
 For a comprehensive list of transformer or closing methods please check the [docs](../docs) for:
-* [`MockUnit<T>`](../docs#mockunit)
+  - [`MockUnit<T>`](../docs#mockunit);
+  - [`MockUnitDays`](../docs#mockunitdays);
+  - [`MockUnitDouble`](../docs#mockunitdouble);
+  - [`MockUnitInt`](../docs#mockunitint);
+  - [`MockUnitLocalDate`](../docs#mockunitlocaldate);
+  - [`MockUnitLong`](../docs#mockunitlong);
+  - [`MockUnitMonth`](../docs#mockunitmonth);
+  - [`MockUnitString`](../docs#mockunitstring)
 
 ## Closing Methods
 
