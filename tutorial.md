@@ -1380,7 +1380,7 @@ BiFunction<String, String, String> emailComposer = (firstName, lastName) -> {
 * Creating the user generator
 */
 MockUnit<User> userGenerator =
-               filler(() -> new User())
+               filler(User::new)
                        .setter(User::setFirstName, names().first())
                        .setter(User::setLastName, names().last())
                        .setter(User::setMiddleName, names().first())
@@ -1423,6 +1423,20 @@ User{id='23e8b4ca-8b83-45ef-a670-8f23c93a25cc', firstName='Ivette', lastName='Ro
 User{id='16ca3877-636e-4a21-9d12-ada0248e7038', firstName='Corrine', lastName='Eichner', middleName='Sylvester', birthDate=Mon Jan 27 00:00:00 EET 2003, email='corrine_eichner17@company.com'}
 */  
 ```
+
+Since version `0.3.2` filler supports setting constant values through the `constant()` method.
+
+E.g.:
+
+```java
+filler(User::new)
+        .constant(User::setFirstName, "Michael") // HERE
+        .setter(User::setLastName, names().last())
+
+        ...
+```
+
+In the previous example the first name of the generated `User` object will always be `"Michael"`.
 
 ## [constructor()](../docs#constructor)
 
@@ -1761,7 +1775,7 @@ We will start by defining the actual Object (`User`) generator `MockUnit<User>`.
 
 
 ```Java
-MockUnit<User> generator = filler(() -> new User())
+MockUnit<User> generator = filler(User::new)
                 .setter(User::setFirstName, names().first())
                 .setter(User::setLastName, names().last())
                 .setter(User::setEmail, emails())
