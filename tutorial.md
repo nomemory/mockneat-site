@@ -7,7 +7,9 @@ sidebar:
   nav: "tutorial"
 ---
 
-This tutorial is intended to describe the ways of working and the most important features of **mockneat**. It's not a long read and it should take less than a few hours. I would also suggest running the examples as you go.
+This tutorial is intended to describe the ways of working and the most important features of **mockneat**.
+
+It's not a long read and it should take less than a few hours. I would also suggest running the examples as you go.
 
 For a comprehensive description of the the various APIs and their usage it's recommended to check the [official docs](../docs).
 
@@ -55,7 +57,7 @@ MockNeat mock2 = MockNeat.secure();
 MockNeat mock3 = MockNeat.old();
 ```
 
-Calling `threadLocal()`, `secure()` or `old()` will always return the same instances of `MockNeat`, so in a way the class is a "three"-ngleton.
+Calling `threadLocal()`, `secure()` or `old()` will always return the same instances of `MockNeat`, so in a way the class is a "three"-ngleton (*I made up the term*).
 
 In most of the use-cases it's recommended to (re)use the `MockNeat.threadLocal()` object. After the instance is referenced, the library can be used like this:
 
@@ -115,13 +117,15 @@ MockNeat mock = new MockNeat(RandomType.SECURE, seed);
 
 It's highly recommended to avoid creating multiple `MockNeat` instances. It's better to stick with one instance per-project.
 
+Also you should take in consideration that none of the data generators are thread-safe.
+
 # MockNeat as an enhanced `Random`
 
 Internally the `MockNeat.class` wraps a java `Random` implementation and offers a powerful API for generating arbitrary values for primitive ([`boolean`](#booleans), [`chars`](#chars), [`ints`](#ints), [`doubles`](#doubles), etc.), `String`, `LocalDate`, `Day` and `Month` types.
 
-After creating any of the [data generators](../docs#datagenerators) (also called a `MockUnit<Type>`s) you always have to call [`get()`](../docs#get) in order to obtain the actual value. **mockneat** works in a lazy way, no value will be generated until explicitly calling the "closing" method `get()` (or `val()`).
+After creating any of the [data generators](../docs#datagenerators) (also called a `MockUnit<Type>`) you always have to call [`get()`](../docs#get) in order to obtain the actual value. **mockneat** works in a lazy way, no value will be generated until explicitly calling the "closing" method `get()` (or `val()`).
 
-*Note*: Older examples you can find on the Internet might be using [`val()`](../docs#val) instead of `get()`. `get()` is just an alias which was introduced later, starting with version `0.2.5`. The reason for this addition is simple, `val` is a restricted keyword in some JVM languages (eg.: Scala).
+*Note*: Older examples you can find on the Internet might be using [`val()`](../docs#val) instead of `get()`. `get()` is just an alias which was introduced later, starting with version `0.2.5`. The reason for this addition is simple, `val` is a restricted keyword in some other JVM languages (eg.: Scala).
 
 ## Booleans
 
@@ -191,7 +195,7 @@ For example the following code will be generating either a lower letter or digit
 char lowerLetterOrDigit = chars().types(LOWER_LETTERS, DIGITS).get();
 ```
 
-*Note:* The `type()/types()/shortcut methods` "pattern" will be found "across" the library.
+*Note:* The `type()/types()/shortcut methods` "pattern" will be found "across" the library in different areas.
 
 ## Ints
 
@@ -340,7 +344,7 @@ String someNumbers = strings()
                         .get();
 System.out.println("someNumbers= " + someNumbers);
 
-// Generates a String with a random size
+// Generates a String with a random size from 1 to 99
 String randomSized = strings()
                         .size(ints().range(1, 100))
                         .get();
@@ -399,7 +403,7 @@ LocalDate inThePast = localDates(minDateInThePast)
                           .get();
 ```
 
-If the application uses the `java.util.Date` type instead of the newer `java.time.LocalDate` there's a convenient way to do it by adding into the mix `toUtilDate()`:
+If the application uses the `java.util.Date` type instead of the newer `java.time.LocalDate` there's a convenient way to do it by adding into the mix `toUtilDate()`, just before calling the *closing* `get()`:
 
 ```java
 Date thisMonth = localDates()
@@ -408,7 +412,7 @@ Date thisMonth = localDates()
                     .get();
 ```                                
 
-After reading the next chapter, the "magic" behind `toUtilDate()` will more obvious.
+PS: After reading the next chapter, the "magic" behind `toUtilDate()` will more obvious.
 
 # "Everything" is a `MockUnit<T>`
 
@@ -460,7 +464,7 @@ Or a `List<String>` where each String is actually a integer from the given range
 MockUnitInt generator = ints().range(0, 100);
 // MockUnitString stringGenerator = generator.map(i -> i.toString());
 MockUnitString stringGenerator = generator.mapToString();
-MockUnit<List<String>> listGenerator = stringGenerator.list(() -> new LinkedList<>(), 10);
+MockUnit<List<String>> listGenerator = stringGenerator.list(LinkedList::new, 10);
 
 List<String> list1 = listGenerator.get();
 List<String> list2 = listGenerator.get();
@@ -487,7 +491,7 @@ For brevity it's not recommended to keep all the intermediary references so you 
 List<String> list3 = ints()
                       .range(0, 100)
                       .mapToString()
-                      .list(() -> new LinkedList<>(), 10)
+                      .list(LinkedList::new, 10)
                       .get();
 
 System.out.println(list3);
@@ -653,7 +657,7 @@ MockUnitInt sizeGen = ints().range(0, 5); // size will be randomly generated
 
 List<List<Integer>> listOfLists = ints()
                                     .list(sizeGen)
-                                    .list(() -> new LinkedList<>(), sizeGen)
+                                    .list(LinkedList::new, sizeGen)
                                     .get();
 
 //Output
@@ -669,7 +673,8 @@ Set<Integer> set = ints()
                          .from(new int[]{1,2,3})
                          .set(1000) // There only 3 possible distinct values,
                                     // mockneat will try 1000 times to add new data
-                                    // but in the end the Set<Integer> will contain
+                                    // but in the end the Set<Integer> will probably
+                                    // contain
                                     // only 3 elements.
                                     // This is normal behaviour.
                          .get();
