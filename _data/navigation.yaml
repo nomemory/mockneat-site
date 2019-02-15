@@ -146,6 +146,8 @@ docs:
         url: /docs#hashes
       - title: "ibans()"
         url: /docs#ibans
+      - title: "industries()"
+        url: /docs#industries
       - title: "ints()"
         url: /docs#ints
       - title: "intSeq()"
@@ -176,12 +178,16 @@ docs:
         url: /docs#names
       - title: "naughtyStrings()"
         url: /docs#naughtystrings
-      - title: "probabilities()"
-        url: /docs#probabilities
       - title: "passwords()"
         url: /docs#passwords
+      - title: "primes()"
+        url: /docs#primes      
+      - title: "probabilities()"
+        url: /docs#probabilities
       - title: "reflect()"
         url: /docs#reflect
+      - title: "primes()"
+        url: /docs#primes
       - title: "regex()"
         url: /docs#regex
       - title: "seq()"
@@ -282,6 +288,8 @@ docs:
   - title: "MockUnitString"
     url: /docs#mockunitstring
     children:
+        - title: "accumulate()"
+          url: "/docs#accumulate"
         - title: "append()"
           url: /docs#append
         - title: "array()"

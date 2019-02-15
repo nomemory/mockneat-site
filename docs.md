@@ -72,6 +72,10 @@ System.out.println(city);
 // Generate a world capital
 String worldCapital = cities().capitals().get();
 System.out.println(worldCapital);
+
+// Generate a capital city in Europe
+String europeCapital = cities().capitalsEurope().get();
+System.out.println(europeCapital);
 ```
 
 ## `constructor()`
@@ -604,6 +608,8 @@ String result = fmt(templ)
 // Possible Output: 45q'
 ```
 
+Note: Other than `MockUnit`s the `param(<param name>, ...)` accepts also a constant `String` as a second parameter.
+
 ## `from()`
 
 This method is used to return a random value from a pre-existing `List<T>`, `T[]` or `Class<T extends Enum<?>>`.
@@ -730,6 +736,12 @@ It only matches the country's prefix, character configuration as defined in the 
 ```java
 String iban = ibans().type(GERMANY).get();
 ```
+
+## `industries()`
+
+This method is used to generate possible "Industrial Fields" as strings.
+
+Eg.: "Sporting Goods, Hobby, Book, and Music Stores", "Support Activities for Agriculture and Forestry", "Support Activities for Mining".
 
 ## `ints()`
 
@@ -1135,6 +1147,17 @@ String medium = passwords().type(MEDIUM).get();
 // Possible Output: cent>ilLion
 ```
 
+## `primes()`
+
+This method is used to generate (small) prime numbers.
+
+```java
+primes()
+  .mapToString()
+  .accumulate(10, ",")
+  .consume(System.out::println);
+```
+
 ## `reflect()`
 
 This method is used to generate mock objects through reflection.
@@ -1443,13 +1466,29 @@ String usStateISO2 = usStates().iso2().get();
 
 This method is used to generate random words.
 
-It comes in 5 flavors:
+It comes in more different flavors:
 
 - `words()` : will return arbitrary words from the English vocabulary;
 - `words().adverbs()` : will return arbitrary adverbs from the English vocabulary;
+- `words().adverbs1syll()` : will return arbitrary adverbs from the English vocabulary (1 syllable);
+- `words().adverbs2syll()` : will return arbitrary adverbs from the English vocabulary (2 syllable);
+- `words().adverbs3syll()` : will return arbitrary adverbs from the English vocabulary (3 syllable);
+- `words().adverbs4syll()` : will return arbitrary adverbs from the English vocabulary (4 syllable);
 - `words().adjectives()` : will return arbitrary adjectives from the English vocabulary;
+- `words().adjectives1syll()` : will return arbitrary adjectives from the English vocabulary (1 syllable);
+- `words().adjectives2syll()` : will return arbitrary adjectives from the English vocabulary (2 syllable);
+- `words().adjectives3syll()` : will return arbitrary adjectives from the English vocabulary (3 syllable);
+- `words().adjectives4syll()` : will return arbitrary adjectives from the English vocabulary (4 syllable);
 - `words().nouns()` : will return arbitrary nouns from the English vocabulary;
-- `words().verbs()` : will return arbitrary verbs from the English vocabulary.
+- `words().nouns1syll()` : will return arbitrary nouns from the English vocabulary (1 syllable);
+- `words().nouns2syll()` : will return arbitrary nouns from the English vocabulary (2 syllable);
+- `words().nouns3syll()` : will return arbitrary nouns from the English vocabulary (3 syllable);
+- `words().nouns4syll()` : will return arbitrary nouns from the English vocabulary (4 syllable);
+- `words().verbs()` : will return arbitrary verbs from the English vocabulary;
+- `words().verbs1syll()` : will return arbitrary verbs from the English vocabulary (1 syllable);
+- `words().verbs2syll()` : will return arbitrary verbs from the English vocabulary (2 syllable);
+- `words().verbs3syll()` : will return arbitrary verbs from the English vocabulary (3 syllable);
+- `words().verbs4syll()` : will return arbitrary verbs from the English vocabulary (4 syllable).
 
 Example:
 
@@ -2123,6 +2162,47 @@ public interface MockUnitString extends MockUnit<String> {}
 This means that it "interits" all the methods from MockUnit<String>, but it also adds new functionalities related to String operations.
 
 The easiest way to obtain a `MockUnitString` implementation is by calling [`mapToString()`](MockUnit#maptostring) on any `MockUnit<T>`. A lot of the methods are already returning `MockUnitString` by default.
+
+### `accumulate()`
+
+This methods concatenates multiple results into one big `String`.
+
+Example for printing 10 arbitrary (small) prime numbers by concatenating with a `,` character:
+
+```java
+primes()
+  .mapToString()
+  .accumulate(10, ",")
+  .consume(System.out::println);
+```
+
+Example (generating HTML code):
+```java
+StringBuilder buff = new StringBuilder();
+
+buff.append("<ul>\n")
+    .append(
+        chars()
+            .upperLetters()
+            .mapToString((c) -> String.format("\t<li>%s</li>", c.toString()))
+            .accumulate(5, "\n")
+            .get()
+     )
+     .append("\n</ul>");
+
+System.out.println(buff.toString());
+
+//Output:
+/**
+<ul>
+	<li>Q</li>
+	<li>F</li>
+	<li>F</li>
+	<li>H</li>
+	<li>S</li>
+</ul
+*/
+```   
 
 ### `append()`
 
