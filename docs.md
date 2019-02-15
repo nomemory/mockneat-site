@@ -1716,6 +1716,37 @@ List<Integer> list = zeroOrOne.list(5).val();
 // Possible Output: [0, 0, 0, 1, 0]
 ```
 
+## `mapToLocalDate()`
+
+This method is used to transform a `MockUnit<T>` into a more specific `MockUnitLocalDate` through a `Function<T, LocalDate>`.
+
+Example:
+
+```java
+// Generates local dates only in 1987 or in 1989
+ints().from(new int[]{ 1987, 1989})
+      .mapToLocalDate(year -> {
+
+                  // Obtain a random month [1, 12]
+                  int month = ints()
+                                .range(1, 13)
+                                .get();
+
+                  // Check how many days the month has for that year
+                  int numDays = YearMonth.of(year, month).lengthOfMonth();
+
+                  // Generate a random day
+                  int day = ints()
+                                .range(1, numDays + 1)
+                                .get();
+
+                  return java.time.LocalDate.of(year, month, day);
+              })
+      .display(BASIC_ISO_DATE)
+      .accumulate(100, "\n")
+      .consume(System.out::println);
+```
+
 ## `mapToLong()`
 
 This method is used to translate a `MockUnit<T>` into a more specific `MockUnitLong`.
