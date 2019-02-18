@@ -1149,7 +1149,7 @@ String medium = passwords().type(MEDIUM).get();
 
 ## `primes()`
 
-This method is used to generate (small) prime numbers.
+This method is used to generate (small) prime numbers from the following interval: `[2, 7919]`;
 
 ```java
 primes()
@@ -2263,4 +2263,52 @@ String friendlyCSV = from(notFriendlyCsv)
                          .mapToString()
                          .escapeCsv()
                          .val();
+```
+
+### `md2()`
+
+Generates the `md2` hash for an arbitrary `String`.
+
+```java
+String str = strings().md2().get();
+```
+
+### `md5()`
+
+Generates the `md5` hash for an arbitrary `String`:
+
+```java
+String str = strings().md5().get();
+```
+
+### `sha1()`
+
+Generates the `sha1` hash for an arbitrary `String`:
+
+```java
+String str = strings().sha1().get();
+```
+
+### `sha256()`
+
+Generates the `sha256` hash for an arbitrary `String`:
+
+```java
+String str = strings().sha256().get();
+```
+
+### `sha384()`
+
+Generates the `sha384` hash for an arbitrary `String`:
+
+```java
+String str = strings().sha384().get();
+```
+
+### `sha512()`
+
+Generates the `sha512` hash for an arbitrary `String`:
+
+```java
+String str = strings().sha512().get();
 ```

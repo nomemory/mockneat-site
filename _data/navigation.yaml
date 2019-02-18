@@ -181,7 +181,7 @@ docs:
       - title: "passwords()"
         url: /docs#passwords
       - title: "primes()"
-        url: /docs#primes      
+        url: /docs#primes
       - title: "probabilities()"
         url: /docs#probabilities
       - title: "reflect()"
@@ -298,3 +298,15 @@ docs:
           url: /docs#base64
         - title: "escapeCsv()"
           url: /docs#escapecsv
+        - title: "md2()"
+          url: /docs#md2
+        - title: "md5()"
+          url: /docs#md5
+        - title: "sha1()"
+          url: /docs#sha1
+        - title: "sha256()"
+          url: /docs#sha256
+        - title: "sha384()"
+          url: /docs#sha384
+        - title: "sha512()"
+          url: /docs#sha512

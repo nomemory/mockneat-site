@@ -1848,4 +1848,70 @@ Note: In order to make the above example work, the `User` class needs to be deco
 
 ## SQL Inserts
 
-TODO
+Provisioning databases with initial sets of data can be done using the [`sqlInserts()`](../docs#sqlinserts) generator and the associated classes.
+
+For example to generate an single `SQLInsert` for a table called `"empt"` (used to store employees data) can be done in the following way:
+
+```java
+SQLInsert oneInsert = sqlInserts()
+                          .tableName("emp")
+                          .column("id", intSeq().increment(10))
+                          .column("first_name", names().first(), TEXT_BACKSLASH)
+                          .column("last_name", names().last(), TEXT_BACKSLASH)
+                          .column("username", users(), TEXT_BACKSLASH)
+                          .column("email", emails(), TEXT_BACKSLASH)
+                          .column("description", markovs().size(32).type(LOREM_IPSUM), TEXT_BACKSLASH)
+                          .column("created", localDates().thisYear().display(BASIC_ISO_DATE), TEXT_BACKSLASH)
+                          .get();
+
+// toString() was overriden to return the actual SQL Insert
+System.out.println(oneInsert);
+
+
+// Possible Output:
+// INSERT INTO emp (id, first_name, last_name, username, email, description, created) VALUES (0, 'Mohammad', 'Hibbets', 'lushtraci', 'villousslags@gmx.com', 'Ante ipsum primis in faucibus. E', '20180724');
+```
+
+The `TEXT_BACKSLASH` parameter is used to denote the fact the column is a text column, and the text is escaped.
+
+For convenience, we can generate multiple SQL inserts, that can be stored in a `SQLTable` object.
+
+```java
+int empTableRows = 100;
+SQLTable empTable = sqlInserts()
+                          .tableName("emp")
+                          .column("id", intSeq().increment(10))
+                          .column("first_name", names().first(), TEXT_BACKSLASH)
+                          .column("last_name", names().last(), TEXT_BACKSLASH)
+                          .column("username", users(), TEXT_BACKSLASH)
+                          .column("email", emails(), TEXT_BACKSLASH)
+                          .column("description", markovs().size(32).type(LOREM_IPSUM), TEXT_BACKSLASH)
+                          .column("created", localDates().thisYear().display(BASIC_ISO_DATE), TEXT_BACKSLASH)
+                          .table(empTableRows) // Generate a table instead of a single Insert
+                          .get();
+```
+
+The `SQLTable` class has a few convenience methods that allows us to modify data:
+
+```java
+// After the table is generated we can modify the data in it
+
+empTable.updateAll((i, insert) -> {
+            // Update all the descriptions with 'N/A'
+            insert.setValue("description", "N/A");
+});
+
+System.out.println(empTable);
+```
+
+Or to select it based on certain criteria:
+
+```java
+// Select only the inserts from the table where the first_name starts with and print them
+
+empTable
+        .selectWhere((sqlInsert -> sqlInsert.getValue("first_name").startsWith("A")))
+        .forEach(System.out::println);
+```
+
+Generating relational data is easy using the `SQLTable.fromColumn("columnName")` method which returns a `MockUnitString`.
