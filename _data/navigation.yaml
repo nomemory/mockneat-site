@@ -86,8 +86,8 @@ docs:
     children:
       - title: "bools()"
         url: /docs#bools
-      - celebrities:
-        url: /docs#celebrities    
+      - title: "celebrities()"
+        url: /docs#celebrities
       - title: "chars()"
         url: /docs#chars
       - title: "cities()"
