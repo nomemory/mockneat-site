@@ -86,6 +86,8 @@ docs:
     children:
       - title: "bools()"
         url: /docs#bools
+      - celebrities:
+        url: /docs#celebrities    
       - title: "chars()"
         url: /docs#chars
       - title: "cities()"
@@ -190,6 +192,8 @@ docs:
         url: /docs#primes
       - title: "regex()"
         url: /docs#regex
+      - title: "rockStars()"
+        url: /docs#rockStars
       - title: "seq()"
         url: /docs#seq
       - title: "sqlInserts()"

@@ -16,13 +16,39 @@ Official docs for mockneat.
 This method help us generate `Boolean` values.
 
 Example:
-```
+```java
 boolean b = bools().get();
 ```
 
 Example for generating a boolean value that has 99.99% of being `true`:
 ```java
 boolean almostAlwaysTrue = bools().probability(99.99).get();
+```
+
+# `celebrities()`
+
+This method help us generate `String` values that represent celebrities names.
+
+Example (the method names are self explanatory):
+
+```java
+String actor = celebrities().actors().get();
+String actress = celebrities().actresses().get();
+String jazzArtist = celebrities().jazzArtists().get();
+String rockStar = celebrities().rockStars().get();
+String ukPrimeMinister = celebrities().ukPrimeMinisters().get();
+String usPresident = celebrities().usPresidents().get();
+
+System.out.printf("%s / %s / %s / %s / %s / %s \n",
+               actor,
+               actress,
+               jazzArtist,
+               ukPrimeMinister,
+               usPresident,
+               rockStar);
+
+// Possible output:
+// Jamie Foxx / Charlotte Fich / Lionel Hampton / Charles Grey / Harry S. Truman / Matt Bellamy               
 ```
 
 ## `chars()`
