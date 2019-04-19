@@ -9,9 +9,9 @@ sidebar:
 
 This tutorial is intended to describe the ways of working and the most important features of **mockneat**.
 
-It's not a long read and it should take less than a few hours. I would also suggest running the examples as you go.
+It's not a long read, and it should take less than a few hours. I would also suggest running the examples as you go.
 
-For a comprehensive description of the the various APIs and their usage it's recommended to check the [official docs](../docs).
+For a comprehensive description of the various APIs and their usage, it's recommended to check the [official docs](../docs).
 
 # Table of contents:
 
@@ -47,7 +47,7 @@ For a comprehensive description of the the various APIs and their usage it's rec
 
 # The `MockNeat` class
 
-The `MockNeat.class` is the "entry-point" of the library. Think of this as a *fat* factory class, responsible with the instantiation of all of the existing [data generators](../docs#datagenerators). It's the most important and, in most of the cases, the most "invisible" component from the library.
+The `MockNeat.class` is the "entry-point" of the library. Think of this as a *fat* factory class, responsible for the instantiation of all of the existing [data generators](../docs#datagenerators). It's the most important and, in most of the cases, the most "invisible" component from the library.
 
 By default three reusable `MockNeat` "factory objects" are created, each wrapping a different type of java `Random` generators ([ThreadLocalRandom](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadLocalRandom.html), [SecureRandom](http://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html) or [the good Old Random](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html)):
 
@@ -59,7 +59,7 @@ MockNeat mock3 = MockNeat.old();
 
 Calling `threadLocal()`, `secure()` or `old()` will always return the same instances of `MockNeat`, so in a way the class is a "three"-ngleton (*I made up the term*).
 
-In most of the use-cases it's recommended to (re)use the `MockNeat.threadLocal()` object. After the instance is referenced, the library can be used like this:
+In most of the use-cases, it's recommended to (re)use the `MockNeat.threadLocal()` object. After the instance is referenced, the library can be used like this:
 
 ```java
 import net.andreinc.mockneat.MockNeat;
@@ -107,7 +107,7 @@ In this tutorial most of the examples will use the shortcut static methods "mirr
 
 *Note:*
 
-For very specific use-cases new `MockNeat` instances can be created by invoking directly the public constructor. For example if we want to create a secure `MockNeat` object with `123l` as the seed:
+For particular use-cases, new `MockNeat` instances can be created by invoking the directly the public constructor. For example, if we want to create a secure `MockNeat` object with `123l` as the seed:
 
 ```java
 Long seed = 123l;
@@ -117,13 +117,13 @@ MockNeat mock = new MockNeat(RandomType.SECURE, seed);
 
 It's highly recommended to avoid creating multiple `MockNeat` instances. It's better to stick with one instance per-project.
 
-Also you should take in consideration that none of the data generators are thread-safe.
+Also, it should be taken in consideration that none of the data generators is thread-safe.
 
 # MockNeat as an enhanced `Random`
 
 Internally the `MockNeat.class` wraps a java `Random` implementation and offers a powerful API for generating arbitrary values for primitive ([`boolean`](#booleans), [`chars`](#chars), [`ints`](#ints), [`doubles`](#doubles), etc.), `String`, `LocalDate`, `Day` and `Month` types.
 
-After creating any of the [data generators](../docs#datagenerators) (also called a `MockUnit<Type>`) you always have to call [`get()`](../docs#get) in order to obtain the actual value. **mockneat** works in a lazy way, no value will be generated until explicitly calling the "closing" method `get()` (or `val()`).
+After creating any of the [data generators](../docs#datagenerators) (also called a `MockUnit<Type>`) you always have to call [`get()`](../docs#get) to obtain the actual value. **mockneat** works lazily; no value will be generated until explicitly calling the "closing" method `get()` (or `val()`).
 
 *Note*: Older examples you can find on the Internet might be using [`val()`](../docs#val) instead of `get()`. `get()` is just an alias which was introduced later, starting with version `0.2.5`. The reason for this addition is simple, `val` is a restricted keyword in some other JVM languages (eg.: Scala).
 
@@ -131,7 +131,7 @@ After creating any of the [data generators](../docs#datagenerators) (also called
 
 `Boolean` (or `boolean`) values can be generated using the [`bools()`](../docs#bools) (or `mockNeat.bools()`) method.
 
-As an additional feature `true` values can be generated with a given probability like in the example bellow.
+As an additional feature `true` values can be generated with a given probability like in the example below.
 
 ```java
 import static net.andreinc.mockneat.unit.types.Bools.bools;
@@ -189,7 +189,7 @@ char an2 = chars().type(ALPHA_NUMERIC).get();
 
 All of the methods `digits()`, `letters()`, `hex()` etc. are shortcuts for the `type(CharsType)` method. In case you want to combine different types but in the same time exclude others, you can use the `types(CharTypes...)` method.
 
-For example the following code will be generating either a lower letter or digit (but not an upper letter):
+For example, the following code will be generating either a lower letter or digit (but not an upper letter):
 
 ```java
 char lowerLetterOrDigit = chars().types(LOWER_LETTERS, DIGITS).get();
@@ -226,7 +226,7 @@ int[] array = new int[] {1,10,100,1000};
 int fromArray = ints().from(array).get();
 ```
 
-For example we can use the `from(int[])` method to arbitrary generate a `10x10` matrix of integers containing only `0` and `1`:
+For example, we can use the `from(int[])` method to arbitrary generate a `10x10` matrix of integers containing only `0` and `1`:
 
 ```java
 // Create a "matrix" of zeroes and ones
@@ -320,7 +320,9 @@ For brevity we won't add additional code examples, please check the [docs](../do
 
 ## Strings
 
-**mockneat** has a few `String` generators, but for the moment we will describe the behaviour of the most common one,  [`strings()`](../docs#strings) (or `mockUnit.strings()`). This generates text without any inherent meaning <sup>(let's call it "giberish")</sup>.
+**mockneat** has a few `String` generators, but for the moment we will describe the behaviour of the most common one,  [`strings()`](../docs#strings) (or `mockUnit.strings()`).
+
+This generates text without any inherent meaning <sup>(let's call it "giberish")</sup>.
 
 Even so, it's possible to specify the type of the characters used (eg.: `NUMBERS`, `ALPHA_NUMERIC`, `LETTERS`, `HEX` or `SPECIAL_CHARACTERS`) and the size of the resulting String. The size can be fixed (`int`) or arbitrary (defined with `ints()`).
 
@@ -425,7 +427,7 @@ MockUnit<Character> asAMockUnit = chars();
 ```
 ...and so on
 
-For certain data types more specialised interfaces exists. For example [`ints()`](../docs#ints) returns an `Ints` data generator, which is an implementation of `MockUnitInt`, which is actually an extension for `MockUnit<Integer>` that adds additional benefits (read *more methods*).
+For specific data types, more specialised interfaces exist. For example [`ints()`](../docs#ints) returns an `Ints` data generator, which is an implementation of `MockUnitInt`, which is an extension for `MockUnit<Integer>` that adds additional benefits (read *more methods*).
 
 The same goes for `MockUnitString` which is an extension of `MockUnit<String>` or `MockUnitLocalDate` which is an extension for `MockUnit<LocalDate>`.
 
@@ -520,11 +522,11 @@ For a comprehensive list of transformer or closing methods please check the [doc
 
 ### [`get()`](../docs#get)
 
-The most obvious closing method is [`get()`](../docs#get). All of the examples have used it so there's need to (re)explain what it does.
+The most obvious closing method is [`get()`](../docs#get). All of the examples have used it, so there's need to (re)explain what it does.
 
 ### [`consume()`](../docs#consume)
 
-Another important method is [`consume()`](../docs#consume). Compared to `get()` this computes the arbitrary value, but it doesn't return it, instead it consumes it through a `Consumer<T> consumer` (or `BiConsumer<Integer, T>`). For example if we just want to print a `List<Integer>` a on `System.out` we can write something like:
+Another important method is [`consume()`](../docs#consume). Compared to `get()` this computes the arbitrary value, but it doesn't return it, instead it consumes it through a `Consumer<T> consumer` (or `BiConsumer<Integer, T>`). For example, if we just want to print a `List<Integer>` a on `System.out` we can write something like:
 
 ```java
 ints().list(10).consume((list) -> System.out.println(list));
@@ -534,7 +536,7 @@ ints().list(10).consume((list) -> System.out.println(list));
 ints().list(10).consume(System.out::println); // Using the :: notation
 ```
 
-The `(Bi)Consumer<T> consumer` can be called multiple times, and with each call the `MockUnit` will return a different value. For example we can write a program that rolls a dice 10 times and prints the results on `System.out` like this:
+The `(Bi)Consumer<T> consumer` can be called multiple times, and with each call the `MockUnit` will return a different value. For example, we can write a program that rolls a dice 10 times and prints the results on `System.out` like this:
 
 ```java
 BiConsumer<Integer, Integer> dicePrinter =
@@ -565,7 +567,7 @@ Roll = 10, Dice = 4
 
 This is one of the most useful transformation method: it takes a `MockUnit<T1>` and transforms it into a `MockUnit<T2>`, through a `Function<T1, T2>`.
 
-For example if we run the [FizzBuzz](https://en.wikipedia.org/wiki/Fizz_buzz) solution over a 100 `Integers` and print the results we can do something like:
+For example, if we run the [FizzBuzz](https://en.wikipedia.org/wiki/Fizz_buzz) solution over a 100 `Integers` and print the results we can do something like:
 
 ```java
 // Solution for FizzBuzz exercise.
@@ -610,7 +612,7 @@ Equivalent methods exist for all the other enhanced `MockUnits`:
 
 The `map(Function<T1, T2>)` doesn't impose any restriction over the types. `T1` can be similar with `T2`. In this case the `MockUnit` will not be translated into something else (from the type perspective).
 
-For example if we want to generate an arbitrary multiple of 10, we can simply apply `map()` and return the same type:
+For example, if we want to generate an arbitrary multiple of 10, we can simply apply `map()` and return the same type:
 
 ```java
 int multipleOf10 = ints().map(i -> i * 10).get();
@@ -632,7 +634,7 @@ Integer[] ints = ints()
 ```
 
 
-`MockUnits` can be chained to obtain powerful constructs. For example generating a `List<List<Integer>>` can be obtain just by calling [`list()`](../docs#list) twice:
+`MockUnits` can be chained to obtain powerful constructs. For example, generating a `List<List<Integer>>` can be obtain just by calling [`list()`](../docs#list) twice:
 
 ```java
 List<List<Integer>> listOfLists = ints()
@@ -650,7 +652,7 @@ System.out.println(listOfLists);
 
 By default the internal implementation used for `List<T>` is `ArrayList<T>`. But what if we want to change the implementation of the "wrapping" `List<T>` from `ArrayList<T>` to `LinkedList<T>`.
 
-Additionally what if we want the list to have an arbitrary length itself ?
+Additionally what if we want the list to have an arbitrary length itself:
 
 ```java
 MockUnitInt sizeGen = ints().range(0, 5); // size will be randomly generated
@@ -718,9 +720,9 @@ System.out.println(map);
 
 *Note:* Just like in the `Set<T>`'s case the keys in the Map are unique so the actual size of the `Map<K,V>` is not guaranteed to be the input value.
 
-[`mapVals()`](../docs#mapvals) works in similar way, but instead of mapping keys we are mapping values. The transformation works the other way around, `MockUnit<T>` becomes `MockUnit<T,R>` where `<R>` keys are generated from the same sources as for `mapKeys()`.
+[`mapVals()`](../docs#mapvals) works in a similar way, but instead of mapping keys, we are mapping values. The transformation works the other way around, `MockUnit<T>` becomes `MockUnit<T,R>` where `<R>` keys are generated from the same sources as for `mapKeys()`.
 
-`mapKeys()` and `mapVals()` can achieve the same results. For example we can create the exact `Map<Integer, List<Double>>` as in the previous example:
+`mapKeys()` and `mapVals()` can achieve the same results. For example, we can create the exact `Map<Integer, List<Double>>` as in the previous example:
 ```java
 Map<Integer, List<Double>> sameMapAsAbove =
                 ints()
@@ -746,7 +748,7 @@ System.out.println(sameMapAsAbove);
 
 This is a method that concatenates multiple values into one "big `String`". You can specify how many `Strings` to be concatenated and what separator to use (Eg.: ",", "\n", etc.):
 
-Example for creating a "HTML List" of random characters:
+Example for creating an "HTML List" of random characters:
 
 ```java
 StringBuilder buff = new StringBuilder();
@@ -818,7 +820,7 @@ Q9GOFLQERB
 
 `append(String)` and `prepend(String)` are modifying the arbitrary generated `String` from the `MockUnitString` by appending and prepending additional text.
 
-For example we pretty print a random matrix of integers like this:
+For example, we pretty print a random matrix of integers like this:
 
 ```java
 int size = 10;
@@ -859,7 +861,7 @@ ints()
 
 It's nice to be able to generate `Integer`, `Double` or `Character` values, but **mockneat** can do much more...
 
-Actually the main reason the library was created was to enable developers to generate (big) data be it json, xml, csv or sql (inserts) format.
+The main reason the library was created was to enable developers to generate (big) data be it json, xml, csv or sql (inserts) format.
 
 That's why multiple and [more complex generators](../docs#datagenerators) were created:
 
@@ -946,7 +948,7 @@ Valid Credit Card Numbers (VISA or Mastercard):
 
 ## Internet Data Generators
 
-The following generators are useful to generate information related to the networking and Internet.
+The following generators are useful to generate information related to the networking and the Internet.
 
 | Data Generator | MockUnit | Description |
 |----------------|---------|--------------|
@@ -1004,7 +1006,7 @@ The resulting data is not arbitrary, but the generators can prove useful for gen
 
 The simplest usage to define a sequence of numbers is with [`intSeq()`](../docs#intseq) for `Integer` or [`longSeq()`](../docs#longseq) for `Long`.
 
-Calling `get()` on the resulting `MockUnitInt` (or `MockUnitLong`) will return incremental values. By default both generators start at 0 and the increment is `1`. (Note: Negative increments are also supported).
+Calling `get()` on the resulting `MockUnitInt` (or `MockUnitLong`) will return incremental values. By default, both generators start at 0 and the increment is `1`. (Note: Negative increments are also supported).
 
 ```java
 MockUnitInt sequence = intSeq();
@@ -1022,7 +1024,7 @@ System.out.println(negativeSeq.get()); // -5
 System.out.println(negativeSeq.get()); // -10
 ```
 
-For example the previous "dice rolling example" (see [consume](#consume)) can be rewritten like this:
+For example, the previous "dice rolling exercise" (see [consume](#consume)) can be rewritten like this:
 
 ```java
 intSeq()
@@ -1088,7 +1090,7 @@ Caused by: java.lang.IllegalStateException: IntSeq overflow. Values are generate
 
 [`seq()`](../docs#seq) is `MockUnit<T>` that allows traversing arrays or `Iterable<T>`.
 
-Each subsequent call will return the next value. For example if we want to traverse a `String[]` containing three values, and create a `Map<String, Integer>` we can do something like:
+Each subsequent call will return the next value. For example, if we want to traverse a `String[]` containing three values, and create a `Map<String, Integer>` we can do something like:
 
 ```java
 String[] keys = new String[] {"A", "B", "C"};
@@ -1183,9 +1185,9 @@ regex("\\d{3}-\\d{3}-\\d{4}")
 
 For the moment the library cannot build text from "external sources" (eg.: a .txt file), but you can use the predefined types: `MarkovChainType.LOREM_IPSUM` and `MarkovChainType.KAFKA`.
 
-*Note:* Once the [Markov Chain](https://en.wikipedia.org/wiki/Markov_chain) is created in memory (which can be CPU/Memory intensive for bigger texts), the memory never gets released.
+*Note:* Once the [Markov Chain](https://en.wikipedia.org/wiki/Markov_chain) is created in memory (which can be CPU/Memory intensive for more significant texts), the memory never gets released.
 
-Example for generating [Lorem Ipsum](https://en.wikipedia.org/wiki/Lorem_ipsum) text. Each call generates a different text:
+Example of generating [Lorem Ipsum](https://en.wikipedia.org/wiki/Lorem_ipsum) text. Each call generates a different text:
 
 ```java
 markovs()
@@ -1198,7 +1200,7 @@ Pulvinar ante. Morbi in dolor lectus. Maecenas et mi vel lorem malesuada hendrer
 */  
 ```
 
-Example for generating text using [Frank Kafka - Metamorphosis](https://en.wikipedia.org/wiki/The_Metamorphosis) as the basis. The generated text might be borderline [NSFW](https://www.urbandictionary.com/define.php?term=NSFW) so I wouldn't use this in business contexts:
+Example of generating text using [Frank Kafka - Metamorphosis](https://en.wikipedia.org/wiki/The_Metamorphosis) as the basis. The generated text might be borderline [NSFW](https://www.urbandictionary.com/define.php?term=NSFW) so I wouldn't use this in business contexts:
 
 ```java
 markovs()
@@ -1238,9 +1240,8 @@ verb=lunge
 */      
 ```
 
-As a more advanced example we can create an address generator. The rules for the street names are going to be generated are as follows:
-
-* The address contains the street number in the range [1, 600), at the end;
+As a more advanced example, we can create an address generator:
+* The address contains the street number in the range `[1, 600)`, at the end;
 * The street has a 25% chance of being a `"Lane"`, 25% chance of being a boulevard (`"Blvd."`) and 50% chances of being simply `"Street"`;
 * The street name has a 25% of being composed from Adjective + Noun, and 75% chances of being only a Noun.
 
@@ -1288,11 +1289,11 @@ Raised Numismatics Blvd. 548
 */
 ```
 
-PS: Take care of the words generated, some of them might be slightly *[NSFW](https://www.urbandictionary.com/define.php?term=NSFW)*.
+PS: Take care of the words generated; some of them might be slightly *[NSFW](https://www.urbandictionary.com/define.php?term=NSFW)*.
 
 ## User Data Generators
 
-The following generators are useful to generate that is normally associated with an User.
+The following generators are useful to generate data that is typically associated with a User.
 
 | Data Generator | MockUnit | Description |
 |----------------|---------|--------------|
@@ -1445,9 +1446,9 @@ In the previous example the first name of the generated `User` object will alway
 
 ## [constructor()](../docs#constructor)
 
-This is an alternative way for creating Object (`<T>`) generators (`MockUnit<T>`).
+This is an alternative way of creating Object (`<T>`) generators (`MockUnit<T>`).
 
-Internally the method uses reflection trying to to match the supplied list of `MockUnit<T1>, MockUnit<T2>..., MockUnit<Tn>` generators with a class constructor that accepts a list of arguments `<T1>, <T2>, ..., <Tn>`.
+Internally the method uses reflection trying to match the supplied list of `MockUnit<T1>, MockUnit<T2>..., MockUnit<Tn>` generators with a class constructor that accepts a list of arguments `<T1>, <T2>, ..., <Tn>`.
 
 The safest scenario when this generator can be used is when the POJO has an All Args Constructor defined.
 
@@ -1614,7 +1615,7 @@ reflect(User.class)
 System.out.println(rUserGenerator.get());
 ```
 
-Setters are not used in this case, the values are "forced" at field level. It's important to remember this in case setters contain their own logic (which shouldn't be the case most of the times), because that logic/code will never be called.
+Setters are not used in this case; the values are "forced" at field level. It's important to remember this in case setters contain their own logic.
 
 By default, an unspecified `field()` remains `null`. If the actual data is not important, but the field needs to be populated with "something", default data generators can be enabled with `useDefaults(true)`:
 
@@ -1647,7 +1648,7 @@ In the previous example, the `birthDate=null`. This happens because by default t
 
 Adding new default generators or overriding existing ones can be done by calling `type(Class<T1> cls, MockUnit<T1> mockUnit)`.
 
-For example if we want to populate the `Date` fields by default with something, we can write something like this:
+For example, if we want to populate the `Date` fields by default with something, we can write something like this:
 
 ```java
 MockUnit<User> rUserGenerator = reflect(User.class)
@@ -1699,7 +1700,7 @@ d7961c05-c58a-4144-afeb-53eb6722c46b, Wesley Blyther, y58
 
 A more concise way of achieving the same results is to use directly the [`csvs()`](../docs#csvs) generator.
 
-This is probably the safest and preferred way of generating valid CSVs because each column has it's content escaped by default, and there's no need to explicitly call `escapeCsv()`:
+This is probably the safest and preferred way of generating valid CSVs because each column has its content escaped by default, and there's no need to call `escapeCsv()` explicitly:
 
 ```java
 String csv = csvs()
@@ -1758,9 +1759,9 @@ csvs()
 
 Arbitrary json (or XML) data can be obtained without any specialised generator.
 
-The sole idea is to create an `Object` through [`filler()`](#filler), [`constructor()`](#constructor), [`factory`](#factory) or [`reflect()`](#reflect) and the use a third party JSON/XML library and `map()`. My library of choice when it comes to JSON is [gson](https://github.com/google/gson) and for XML it's JAXB.
+The sole idea is to create an `Object` through [`filler()`](#filler), [`constructor()`](#constructor), [`factory`](#factory) or [`reflect()`](#reflect) and the use a third-party JSON/XML library and `map()`. (My library of choice when it comes to processing JSON is [gson](https://github.com/google/gson); for XML it's JAXB.)
 
-This come with an apparent limitation, a set of additional classes should be created (if they don't exist) to represent the JSON structure.
+This comes with an apparent limitation, a set of additional classes should be created (if they don't exist) to represent the JSON structure.
 
 Example:
 
@@ -1850,7 +1851,7 @@ Note: In order to make the above example work, the `User` class needs to be deco
 
 Provisioning databases with initial sets of data can be done using the [`sqlInserts()`](../docs#sqlinserts) generator and the associated classes.
 
-For example to generate an single `SQLInsert` for a table called `"empt"` (used to store employees data) can be done in the following way:
+For example, to generate a single `SQLInsert` for a table called `"empt"` (used to store employees data) can be done in the following way:
 
 ```java
 SQLInsert oneInsert = sqlInserts()
