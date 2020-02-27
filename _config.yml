@@ -27,7 +27,7 @@ theme: minimal-mistakes-jekyll
 highlighter: rouge
 
 # Search
-search: true
+search: false
 search_provider: algolia
 algolia:
   application_id: E6ZM2ULWGR

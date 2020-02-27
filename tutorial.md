@@ -111,13 +111,34 @@ For particular use-cases, new `MockNeat` instances can be created by invoking th
 
 ```java
 Long seed = 123l;
-// Note: RandomType.SECURE is the only type that supports seeding.
 MockNeat mock = new MockNeat(RandomType.SECURE, seed);
 ```
 
 It's highly recommended to avoid creating multiple `MockNeat` instances. It's better to stick with one instance per-project.
 
 Also, it should be taken in consideration that none of the data generators is thread-safe.
+
+*Note:*
+
+`RandomType.OLD` can be used to to generate data considered to be "stable".
+
+Example:
+
+```java
+long hashBasis = 99823981L;
+
+System.out.println(new MockNeat(RandomType.OLD, hashBasis).countries().names().get());
+System.out.println(new MockNeat(RandomType.OLD, hashBasis).countries().names().get());
+System.out.println(new MockNeat(RandomType.OLD, hashBasis).countries().names().get());
+System.out.println(new MockNeat(RandomType.OLD, hashBasis).countries().names().get());
+
+// Prints out
+
+// Iceland
+// Iceland
+// Iceland
+// Iceland
+```
 
 # MockNeat as an enhanced `Random`
 
