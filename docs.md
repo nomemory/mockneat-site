@@ -104,6 +104,10 @@ String europeCapital = cities().capitalsEurope().get();
 System.out.println(europeCapital);
 ```
 
+## `constant()`
+
+This method is to generate the same value each time.
+
 ## `constructor()`
 
 This method is used to generate / mock objects by calling the constructor of the target class (using reflection). The params supplied to the constructor can be `MockUnit` objects or constants.

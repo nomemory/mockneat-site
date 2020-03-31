@@ -92,6 +92,8 @@ docs:
         url: /docs#chars
       - title: "cities()"
         url: /docs#cities
+      - title: "constant()"
+        url: /docs#constant
       - title: "constructor()"
         url: /docs#constructor
       - title: "countries()"
