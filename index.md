@@ -15,6 +15,8 @@ To install **mockneat** from sources or with gradle/maven please check visit the
 
 To find out more about the various features, please check [the tutorial](../tutorial), or the [docs](../docs).
 
+If you want to use **mockneat** to mock REST APIs please check: [serverneat](https://github.com/nomemory/serverneat).
+
 ### Sneak Peek / Quick Example For Generating SQL Inserts
 
 ```java
