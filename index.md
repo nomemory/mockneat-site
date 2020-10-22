@@ -32,16 +32,16 @@ List<Integer> managerIds = fromInts(employeesIds).list(numManagers).get();
 SQLTable departments = sqlInserts()
                         .tableName("deps")
                           .column("id", intSeq())
-                          .column("name", departments(), MySQL.TEXT)
+                          .column("name", departments(), MySQL.TEXT_BACKSLASH)
                         .table(numDeps) // Groups the SQL Inserts into a table
                         .get(); // Retrieves the "table" representation
 
 SQLTable employees = sqlInserts()
                         .tableName("emps")
                           .column("id", seq(employeesIds))
-                          .column("first_name", names().first(), MySQL.TEXT)
-                          .column("last_name", names().last(), MySQL.TEXT)
-                          .column("email", "NULL", MySQL.TEXT)
+                          .column("first_name", names().first(), MySQL.TEXT_BACKSLASH)
+                          .column("last_name", names().last(), MySQL.TEXT_BACKSLASH)
+                          .column("email", "NULL", MySQL.TEXT_BACKSLASH)
                           .column("manager_id", fromInts(managerIds))
                           .column("dep_id", departments.fromColumn("id"))
                         .table(numEmployees) // Groups the SQL Inserts inside a table
