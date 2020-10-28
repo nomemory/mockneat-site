@@ -1868,6 +1868,49 @@ generator
 
 Note: In order to make the above example work, the `User` class needs to be decorated with the `@XMLRootElement` annotation (from JAXB).
 
+If no POJO classes representing the model exist in the project objectMap() can be used instead:
+
+```java
+ Map<String, Object> om =
+                objectMap()
+                        .put("person", objectMap()
+                                                .put("name", names().full())
+                                                .put("age", ints().range(18,60))
+                                                .put("visits", objectMap()
+                                                                        .put("city", cities().capitalsEurope())
+                                                                        .put("date", localDates().thisYear().display("yyyy-MM-dd"))
+                                                                        .list(ints().range(3,6))))
+                    .get();
+
+Gson gson = new GsonBuilder().setPrettyPrinting().create();
+System.out.println(gson.toJson(om));
+```
+
+With the possible output:
+
+```json
+{
+  "person": {
+    "visits": [
+      {
+        "date": "2020-02-21",
+        "city": "Zagreb"
+      },
+      {
+        "date": "2020-03-27",
+        "city": "Vilnius"
+      },
+      {
+        "date": "2020-09-28",
+        "city": "London"
+      }
+    ],
+    "name": "Kellye Alsdon",
+    "age": 59
+    }
+}    
+```
+
 ## SQL Inserts
 
 Provisioning databases with initial sets of data can be done using the [`sqlInserts()`](../docs#sqlinserts) generator and the associated classes.
