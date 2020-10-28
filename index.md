@@ -17,7 +17,42 @@ To find out more about the various features, please check [the tutorial](../tuto
 
 If you want to use **mockneat** to mock REST APIs please check: [serverneat](https://github.com/nomemory/serverneat).
 
-### Sneak Peek / Quick Example For Generating SQL Inserts
+### Quick Example For Generating JSONs
+
+```java
+objectMap().put("person", objectMap().put("name", names().full())
+                                     .put("age", ints().range(18,60))
+                                     .put("visits", objectMap().put("city", cities().capitalsEurope())
+                                                               .put("date", localDates().thisYear().display("yyyy-MM-dd"))
+                                                               .list(ints().range(3,6))))
+                    .get();
+```
+
+Output:
+
+```
+{
+  "name": "Kellye Alsdon",
+  "age": 59,
+  "person": {
+    "visits": [
+      {
+        "date": "2020-02-21",
+        "city": "Zagreb"
+      },
+      {
+        "date": "2020-03-27",
+        "city": "Vilnius"
+      },
+      {
+        "date": "2020-09-28",
+        "city": "London"
+      }
+    ]
+  }
+```
+
+### Quick Example For Generating SQL Inserts
 
 ```java
 final int numEmployees = 1000;
