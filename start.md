@@ -26,7 +26,7 @@ The library is *free* and *open-source*, so the the latest version can be built 
     <dependency>
         <groupId>net.andreinc.mockneat</groupId>
         <artifactId>mockneat</artifactId>
-        <version>0.4.1</version>
+        <version>0.4.2</version>
     </dependency>
 </dependencies>
 ```
@@ -38,7 +38,7 @@ repositories {
   jcenter()
 }
 dependencies {
-  compile 'net.andreinc.mockneat:mockneat:0.4.1'
+  compile 'net.andreinc.mockneat:mockneat:0.4.2'
 }
 ```
 
