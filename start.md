@@ -7,13 +7,29 @@ sidebar:
   nav: "start"
 ---
 
-[**mockneat**](https://github.com/nomemory/mockneat) is hosted on [jcenter()](https://bintray.com/nomemory/maven/mockneat) and it's available as a dependency for [maven](#maven), [gradle](#gradle) and ivy.
+Historically, **mockneat** was hosted using bintray/jcenter. Starting with **May 1st 2021** JFrog decided not to accept new versions and packages for submission. 
 
-The library is *free* and *open-source*, so the the latest version can be built directly from the [source code](#sources).
+From `0.4.4` version onwards, **mockneat** will be hosted on [maven central](https://search.maven.org/). 
 
-*Note*: There is also an (**outdated**) Maven Central mirror, but I recommend you to use the jcenter() repository if possible, especially for the latest versions and patches.
+For older versions (<= `0.4.2`) you can continue to use the older jcenter() repository, which will be up at least until **February 1st 2022**. This gives us enough time to migrate all the projects to the new maven central repo.
 
-#### **maven**
+### **maven** (maven central, versions >= `0.4.4`)
+
+```xml
+<dependency>
+  <groupId>net.andreinc</groupId>
+  <artifactId>mockneat</artifactId>
+  <version>0.4.4</version>
+</dependency>
+```
+
+### **gradle** (maven central, versions >= `0.4.4`)
+
+```groovy
+implementation 'net.andreinc:mockneat:0.4.4'
+```
+
+#### **maven** (jcenter, versions =< `0.4.2.`)
 
 ```xml
 <repositories>
@@ -31,7 +47,7 @@ The library is *free* and *open-source*, so the the latest version can be built 
 </dependencies>
 ```
 
-#### **gradle**
+#### **gradle** (jcenter, versions < `0.4.2.`)
 
 ```groovy
 repositories {

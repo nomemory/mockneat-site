@@ -9,10 +9,14 @@ main:
 start:
   - title: start
     children:
-      - title: "maven"
-        url: /start#maven
-      - title: "gradle"
-        url: /start#gradle
+      - title: "maven (>= 0.4.4)"
+        url: /start#maven-maven-central-versions--044
+      - title: "gradle (>= 0.4.4)"
+        url: /start#gradle-maven-central-versions--044
+      - title: "maven (<= 0.4.2)"
+        url: /start#maven-jcenter-versions--042
+      - title: "gradle (<= 0.4.2)"
+        url: /start#gradle-jcenter-versions--042
       - title: "sources"
         url: /start#sources
 

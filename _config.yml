@@ -28,12 +28,6 @@ highlighter: rouge
 
 # Search
 search: false
-search_provider: algolia
-algolia:
-  application_id: E6ZM2ULWGR
-  index_name: mockneat
-  search_only_api_key: d333e30fbd257b17e9a83f7598444e30
-  powered_by: true
 
 author:
   name: "Andrei N. Ciobanu (nomemory)"
