@@ -51,6 +51,17 @@ System.out.printf("%s / %s / %s / %s / %s / %s \n",
 // Jamie Foxx / Charlotte Fich / Lionel Hampton / Charles Grey / Harry S. Truman / Matt Bellamy               
 ```
 
+## `cars()`
+
+This method helps generate car models and brands:
+
+```java
+cars().list(1000).consume(System.out::println);
+
+// Brands only (e.g: "Dacia")
+cars().brands().list(100).consume(System.out::println);
+```
+
 ## `chars()`
 
 This method helps us generate `Character` values.

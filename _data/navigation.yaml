@@ -92,6 +92,8 @@ docs:
         url: /docs#bools
       - title: "celebrities()"
         url: /docs#celebrities
+      - title: "cars()"
+        url: /docs#cars
       - title: "chars()"
         url: /docs#chars
       - title: "cities()"
