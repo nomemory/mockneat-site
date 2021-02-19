@@ -1980,3 +1980,5 @@ empTable
 ```
 
 Generating relational data is easy using the `SQLTable.fromColumn("columnName")` method which returns a `MockUnitString`.
+
+To see more advanced usages of this powerful functionality please check this repository: [neat-sample-databases-generators](https://github.com/nomemory/neat-sample-databases-generators).
