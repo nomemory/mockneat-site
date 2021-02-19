@@ -17,7 +17,7 @@ To find out more about the various features, please check [the tutorial](../tuto
 
 If you want to use **mockneat** to mock REST APIs please check: [serverneat](https://github.com/nomemory/serverneat).
 
-If you want to see **mockneat** in action, generating SQL Inserts please check the following repository: | [neat-sample-database-generators](https://github.com/nomemory/neat-sample-databases-generators).
+If you want to see **mockneat** in action generating SQL Inserts, please check the following repository: [neat-sample-database-generators](https://github.com/nomemory/neat-sample-databases-generators).
 
 ### Quick Example For Generating SQL Inserts
 
