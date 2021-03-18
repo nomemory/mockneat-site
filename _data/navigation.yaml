@@ -88,6 +88,8 @@ docs:
   - title: "data generators"
     url: "/docs#datagenerators"
     children:
+      - title: "addresses()"
+        url: /docs#addresses
       - title: "bools()"
         url: /docs#bools
       - title: "celebrities()"

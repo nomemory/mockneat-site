@@ -11,6 +11,24 @@ Official docs for mockneat.
 
 # Data generators
 
+## `addresses()`
+
+This method is useful to generate user addresses:
+
+```java
+addresses().line1().consume(System.out::println);
+addresses().line2().consume(System.out::println);
+addresses().consume(System.out::println);
+```
+
+Output:
+
+```
+7792 Poke Blvd
+Suite 305
+16228 Scouters Rd Line 543
+```
+
 ## `bools()`
 
 This method help us generate `Boolean` values.
