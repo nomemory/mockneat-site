@@ -1161,6 +1161,30 @@ There is a list of additional supported sub-methods:
 - `naughtyStrings().xmlInjection()` ;
 - `naughtyStrings().zalgoText()` ;
 
+## `objectMap()`
+
+This method is used to generate a `Map<String, Object>`. It is particularly useful when generating data in JSON format.
+
+Example:
+
+```java
+Map<String, Object> map =
+        objectMap()
+        .put("name", names().last())
+        .put("age", ints().range(10, 100))
+        .put("inner",
+                objectMap().put("actors", actors().set(10))
+        )
+        .get();
+System.out.println(map);
+```
+
+Output:
+
+```text
+{name=Rockovich, inner={actors=[Byung-Hun Lee, Takeshi Kitano, Bob Hoskins, Ed Helms, Paul Giamatti, Mike Myers, Thomas Haden Church, Chris O'Donnell, Henry Fonda, John Travolta]}, age=28}
+```
+
 ## `probabilities()`
 
 This method is used to generate objects based on associated probabilities.

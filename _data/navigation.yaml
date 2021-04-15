@@ -3,6 +3,8 @@ main:
     url: /start
   - title: "tutorial"
     url: /tutorial
+  - title: "examples"
+    url: /examples
   - title: "docs"
     url: /docs
 
@@ -19,6 +21,14 @@ start:
         url: /start#gradle-jcenter-versions--042
       - title: "sources"
         url: /start#sources
+
+examples:
+  - title: examples
+    children:
+      - title: "json"
+        url: /examples#json
+      - title: "sql"
+        url: /examples#sql
 
 tutorial:
   - title: "The MockNeat class"
@@ -196,6 +206,8 @@ docs:
         url: /docs#primes
       - title: "probabilities()"
         url: /docs#probabilities
+      - title: "objectMap()"
+        url: /docs#objectmap
       - title: "reflect()"
         url: /docs#reflect
       - title: "primes()"

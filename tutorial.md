@@ -1801,7 +1801,7 @@ private static class User {
 We will start by defining the actual Object (`User`) generator `MockUnit<User>`. The preferred way of creating this should be [`filler()`](#filler).
 
 
-```Java
+```java
 MockUnit<User> generator = filler(User::new)
                 .setter(User::setFirstName, names().first())
                 .setter(User::setLastName, names().last())
