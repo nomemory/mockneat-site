@@ -11,9 +11,63 @@ sidebar:
 This page contains a list of quick examples without any additional explanations. 
 To better understand what's happening under the hood, I recommend reading the [tutorial](/tutorial) first.
 
+# random alternative
+
+```java
+// Generate arbitrary integers
+Integer a = ints().get();
+Integer b = ints().range(0, 10).get();
+Integer c = ints().bound(100).get();
+
+System.out.printf("%d %d %d\n", a, b, c);
+
+// Boolean with probabilities
+boolean aBoolean = bools().probability(/* for true */ 90).get();
+System.out.println(aBoolean);
+
+// A 100 length that is either alpha numerical or in HEX
+String s1 = strings().size(100).types(ALPHA_NUMERIC, HEX).get();
+System.out.println(s1);
+```
+
+Output:
+```text
+-6267334 6 86
+true
+df9pti0OVsBAtzgZGGNAl1yUN2ws7kqJgfZojD1OFD6Y4bCSB0P911MITfTKPO5Vv8diPZIN4GtWWGWN3WDLAhemkPMHugfHKivm
+```
+
+# collections
+
+```java
+// An arbitrary array of size 10 with 0s and 1s
+int[] zeroesAndOnes = fromInts(new int[]{ 0, 1 }).arrayPrimitive(10).get();
+System.out.println(Arrays.toString(zeroesAndOnes));
+
+// A set with a maximum length of 10
+Set<Integer> primes1 = primes().set(10).get();
+Set<Integer> primes2 = primes().set(TreeSet::new, 10).get();
+System.out.println(primes1);
+System.out.println(primes2);
+
+// A map with letters as keys and numbers between [0, 10) as values
+Supplier<Integer> values = ints().range(0, 10).supplier();
+Map<Character, Integer> letters = chars().letters().mapVals(10, values).get();
+System.out.println(letters);
+```
+
+Output:
+```text
+[0, 1, 0, 0, 1, 0, 0, 1, 0, 1]
+[3217, 7393, 4663, 5449, 1723, 7723, 1307, 2797, 4733, 7213]
+[433, 971, 2693, 3187, 3319, 3943, 4909, 5039, 5381, 6197]
+{P=2, S=8, E=1, I=7, Y=3, y=3, K=7, l=3, N=4}
+```
+
 # json
 
-The following examples make use of the [objectMap()](/docs#objectmap) method.
+The following examples make uses [objectMap()](/docs#objectmap) method.
+
 The alternative way to generate a **JSON** is to create an intermediary POJO, as described in the [tutorial](/tutorial/#json-and-xml). 
 
 ```java

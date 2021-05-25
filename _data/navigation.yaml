@@ -25,6 +25,10 @@ start:
 examples:
   - title: examples
     children:
+      - title: "random alternative"
+        url: /examples#random-alternative
+      - title: "collections"
+        url: /examples#collections
       - title: "json"
         url: /examples#json
       - title: "sql"
