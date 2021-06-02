@@ -7,7 +7,7 @@ sidebar:
   nav: "tutorial"
 ---
 
-This tutorial is intended to describe the ways of working and the most important features of **mockneat**.
+This tutorial is intended to describe the ways of working, and the most important features of **mockneat**.
 
 It's not a long read, and it should take less than a few hours. I would also suggest running the examples as you go.
 
@@ -47,9 +47,9 @@ For a comprehensive description of the various APIs and their usage, it's recomm
 
 # The `MockNeat` class
 
-The `MockNeat.class` is the "entry-point" of the library. Think of this as a *fat* factory class, responsible for the instantiation of all of the existing [data generators](../docs#datagenerators). It's the most important and, in most of the cases, the most "invisible" component from the library.
+The `MockNeat.class` is the "entry-point" of the library. Think of this as a *fat* factory class, responsible for the instantiation of all the existing [data generators](../docs#datagenerators). It's the most important and, in most of the cases, the most "invisible" component from the library.
 
-By default three reusable `MockNeat` "factory objects" are created, each wrapping a different type of java `Random` generators ([ThreadLocalRandom](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadLocalRandom.html), [SecureRandom](http://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html) or [the good Old Random](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html)):
+By default, three reusable `MockNeat` "factory objects" are created, each wrapping a different type of java `Random` generators ([ThreadLocalRandom](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadLocalRandom.html), [SecureRandom](http://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html) or [the good Old Random](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html)):
 
 ```java
 MockNeat mock1 = MockNeat.threadLocal(); // recommended !
@@ -324,7 +324,7 @@ double d1 = doubles().get();
 double d2 = doubles().range(0, 10.0).get();
 ```
 
-Just like the `ints()` data generator, the `doubles()` generator has a helper method to select values randomly from an an already existing array (`double[] array`).
+Just like the `ints()` data generator, the `doubles()` generator has a helper method to select values randomly from an already existing array (`double[] array`).
 
 ```java
 // Generates an arbitrary double that is either 1.1, 1.2 or 1.3
@@ -381,9 +381,9 @@ someNumbers= 9098810282
 
 ## Dates
 
-An easy to use mechanism was implemented to generate `LocalDate` values, using the [`localDate()`](../docs#localdates) (or `mockUnit.localDates()`) method.
+An easy-to-use mechanism was implemented to generate `LocalDate` values, using the [`localDate()`](../docs#localdates) (or `mockUnit.localDates()`) method.
 
-By default dates are generated from `[1970, now()]`:
+By default, dates are generated from `[1970, now()]`:
 
 ```java
 LocalDate localDate = localDates().get();
@@ -462,7 +462,7 @@ MockUnitString smarterStringGenerator = strings();
 
 In short, `MockUnit`s are powerful mechanisms that allow developers to generate data incrementally, by defining broader behaviours that can be reused/transformed later, under different circumstances.
 
-For example we define an `ints()` generator (`MockUnitInt`) that generates numbers between `[0, 100)`.
+For example, we define an `ints()` generator (`MockUnitInt`) that generates numbers between `[0, 100)`.
 
 ```java
 MockUnitInt generator = ints().range(0, 100);
@@ -508,7 +508,7 @@ More precisely `mapToString()` is transforming the `MockUnitInt` generator into 
 
 `list(Supplier<List<String>>, int size)` is another transformer that will transform the previous `MockUnitString` into a new `MockUnit<List<String>>`, where each element from the resulting `List` is a `String` representing an `Integer` in the range <sup>yes, exactly</sup>`[0, 100)`.
 
-For brevity it's not recommended to keep all the intermediary references so you can chain all the methods (in the most fluent mode possible):
+For brevity, it's not recommended keeping all the intermediary references, so you can chain all the methods (in the most fluent mode possible):
 
 ```java
 List<String> list3 = ints()
@@ -543,7 +543,7 @@ For a comprehensive list of transformer or closing methods please check the [doc
 
 ### [`get()`](../docs#get)
 
-The most obvious closing method is [`get()`](../docs#get). All of the examples have used it, so there's need to (re)explain what it does.
+The most obvious closing method is [`get()`](../docs#get). All the examples have used it, so there's need to (re)explain what it does.
 
 ### [`consume()`](../docs#consume)
 
@@ -655,7 +655,7 @@ Integer[] ints = ints()
 ```
 
 
-`MockUnits` can be chained to obtain powerful constructs. For example, generating a `List<List<Integer>>` can be obtain just by calling [`list()`](../docs#list) twice:
+`MockUnits` can be chained to obtain powerful constructs. For example, generating a `List<List<Integer>>` can be obtained just by calling [`list()`](../docs#list) twice:
 
 ```java
 List<List<Integer>> listOfLists = ints()
@@ -671,9 +671,9 @@ System.out.println(listOfLists);
 */
 ```
 
-By default the internal implementation used for `List<T>` is `ArrayList<T>`. But what if we want to change the implementation of the "wrapping" `List<T>` from `ArrayList<T>` to `LinkedList<T>`.
+By default, the internal implementation used for `List<T>` is `ArrayList<T>`. But what if we want to change the implementation of the "wrapping" `List<T>` from `ArrayList<T>` to `LinkedList<T>`.
 
-Additionally what if we want the list to have an arbitrary length itself:
+Additionally, what if we want the list to have an arbitrary length itself:
 
 ```java
 MockUnitInt sizeGen = ints().range(0, 5); // size will be randomly generated
@@ -689,7 +689,7 @@ List<List<Integer>> listOfLists = ints()
 */
 ```
 
-[`set()`](../docs#set) works in a similar fashion as `list()`, the API is the same except one big difference: size is not guaranteed. This is a normal consequence of the fact that a `Set<T>` can only contain unique elements.
+[`set()`](../docs#set) works similarly as `list()`, the API is the same except one big difference: size is not guaranteed. This is a normal consequence of the fact that a `Set<T>` can only contain unique elements.
 
 ```java
 Set<Integer> set = ints()
@@ -713,7 +713,7 @@ set.sizie() =3
 
 The [mapKeys()](../docs#mapkeys) method is used to create `Map<K, V>`s and fill them up with arbitrary data.
 
-Basically it transforms an existing `MockUnit<T>` into a a new `MockUnit<R, T>` where the `<R>` keys are generated from:
+Basically it transforms an existing `MockUnit<T>` into a new `MockUnit<R, T>` where the `<R>` keys are generated from:
 
 * A `Supplier<R>` (this can be obtained from a `MockUnit` with `mockUnit.supplier()`);
 * An `Iterable<R>` (eg.: a `List<R>`);
@@ -741,7 +741,7 @@ System.out.println(map);
 
 *Note:* Just like in the `Set<T>`'s case the keys in the Map are unique so the actual size of the `Map<K,V>` is not guaranteed to be the input value.
 
-[`mapVals()`](../docs#mapvals) works in a similar way, but instead of mapping keys, we are mapping values. The transformation works the other way around, `MockUnit<T>` becomes `MockUnit<T,R>` where `<R>` keys are generated from the same sources as for `mapKeys()`.
+[`mapVals()`](../docs#mapvals) works similarly, but instead of mapping keys, we are mapping values. The transformation works the other way around, `MockUnit<T>` becomes `MockUnit<T,R>` where `<R>` keys are generated from the same sources as for `mapKeys()`.
 
 `mapKeys()` and `mapVals()` can achieve the same results. For example, we can create the exact `Map<Integer, List<Double>>` as in the previous example:
 ```java
@@ -980,7 +980,7 @@ The following generators are useful to generate information related to the netwo
 | [`urls()`](../docs#urls) | `MockUnitString` | This method can be used to generate random [URLs](https://en.wikipedia.org/wiki/URL). |
 
 
-Example for generating a `Map<String, String>` association where the key is an IPv4 address and the value is a MAC Address:
+Example for generating a `Map<String, String>` association where the key is an IPv4 address, and the value is a MAC Address:
 
 ```java
 import static net.andreinc.mockneat.types.enums.IPv4Type.CLASS_A_NONPRIVATE;
@@ -1027,7 +1027,7 @@ The resulting data is not arbitrary, but the generators can prove useful for gen
 
 The simplest usage to define a sequence of numbers is with [`intSeq()`](../docs#intseq) for `Integer` or [`longSeq()`](../docs#longseq) for `Long`.
 
-Calling `get()` on the resulting `MockUnitInt` (or `MockUnitLong`) will return incremental values. By default, both generators start at 0 and the increment is `1`. (Note: Negative increments are also supported).
+Calling `get()` on the resulting `MockUnitInt` (or `MockUnitLong`) will return incremental values. By default, both generators start at 0, and the increment is `1`. (Note: Negative increments are also supported).
 
 ```java
 MockUnitInt sequence = intSeq();
@@ -1178,7 +1178,7 @@ Roll = 2, Dice = 3
 
 ### [`regex()`](../docs#regex)
 
-This generator acts as an wrapper for [generex](https://github.com/mifmif/Generex), a java library that can generate arbitrary strings matching a certain regular expression.
+This generator acts as a wrapper for [generex](https://github.com/mifmif/Generex), a java library that can generate arbitrary strings matching a certain regular expression.
 
 You shouldn't expect this generator to be a full-featured reverse-regex engine, but most of the simple regex expression will work.
 
@@ -1264,7 +1264,7 @@ verb=lunge
 As a more advanced example, we can create an address generator:
 * The address contains the street number in the range `[1, 600)`, at the end;
 * The street has a 25% chance of being a `"Lane"`, 25% chance of being a boulevard (`"Blvd."`) and 50% chances of being simply `"Street"`;
-* The street name has a 25% of being composed from Adjective + Noun, and 75% chances of being only a Noun.
+* The street name has a 25% of being composed of Adjective + Noun, and 75% chances of being only a Noun.
 
 The example will combine `ints()`, `words()`, `fmt()` and `probabilities()` for generating the desired result:
 
@@ -1324,7 +1324,7 @@ The following generators are useful to generate data that is typically associate
 | [`passwords`](../docs#passwords) | `MockUnitString` | Generates passwords with different strengths. |
 | [`users()`](../docs#users) | `MockUnitString` | Generates usernames. |
 
-Example for generating a `List<String>` of 10 email addresses and their associated passwords:
+Example for generating a `List<String>` of 10 email addresses, and their associated passwords:
 
 ```java
 fmt("{email='#{email}', pass='#{pass}'}")
@@ -1915,7 +1915,7 @@ With the possible output:
 
 Provisioning databases with initial sets of data can be done using the [`sqlInserts()`](../docs#sqlinserts) generator and the associated classes.
 
-For example, to generate a single `SQLInsert` for a table called `"empt"` (used to store employees data) can be done in the following way:
+For example, to generate a single `SQLInsert` for a table called `"empt"` (used to store `employees` data) can be done in the following way:
 
 ```java
 SQLInsert oneInsert = sqlInserts()
