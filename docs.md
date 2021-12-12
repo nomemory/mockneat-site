@@ -9,7 +9,23 @@ sidebar:
 
 Official docs for mockneat.
 
-# Data generators
+# generators by category
+
+* Data formats: [csvs()](#csvs), [sqlInserts()](#sqlinserts)
+* Financial: [creditCards()](#creditcards), [currencies()](#currencies), [cvvs()](#cvvs), [ibans()](#ibans), [money()](#money)
+* General purpose: [files()](#files), [hashes()](#hashes), [probabilities()](#probabilities), [shufflers()](#shufflers)
+* Geography: [cities()](#cities), [countries()](#countries), [usStates()](#usstates)
+* Internet: [domains()](#domains), [emails()](#emails), [ipv4s()](#ipv4s), [ipv6s()](#ipv6s), [macs()](#macs), [mimes()](#mimes), [urls()](#urls)
+* Java types: [bools()](#bools), [chars()](#chars), [doubles()](#doubles), [floats()](#floats), [ints()](#ints), [longs()](#longs), [strings()](#strings)
+* Java objects: [constant()](#constant), [constructor()](#constructor), [factory()](#factory), [filler()](#filler), [from()](#from), [fromKeys()](#fromkeys), [fromValues()](#fromvalues), [objectMap()](#objectmap), [reflect()](#reflect) 
+* Numbers: [primes()](#primes)
+* Personal Information: [addresses()](#addresses), [genders()](#genders), [names()](#names), [nonBinaryGenders()](#nonBinaryGenders), [passwords()](#passwords), [sscs()](#sscs)
+* Pop Culture: [celebrities()](#celebrities)
+* Industrial & Economical: [cars()](#cars), [departments()](#departments), [industries()](#industries), [issns()](#issns)
+* Sequences: [intSeq()](#intseq), [longSeq()](#longseq), [seq()](#seq)
+* Space: [space()](#space)
+* Text: [fmt()](#fmt), [markovs()](#markovs), [naughtyStrings()](#naughtystrings), [regex()](#regex), [words()](#words)
+* Time: [days()](#days), [localDates()](#localdates), [months()](#months), [passwords()](#passwords)
 
 ## `addresses()`
 
@@ -1160,6 +1176,14 @@ There is a list of additional supported sub-methods:
 - `naughtyStrings().unwantedInterpolation()` ;
 - `naughtyStrings().xmlInjection()` ;
 - `naughtyStrings().zalgoText()` ;
+
+## `nonBinaryGenders()`
+
+This method is used to generate non-binary genders:
+
+```java
+nonBinaryGenders().consume(System.out::println);
+```
 
 ## `objectMap()`
 

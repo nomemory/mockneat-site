@@ -19,14 +19,14 @@ For older versions (<= `0.4.2`) you can continue to use the older jcenter() repo
 <dependency>
   <groupId>net.andreinc</groupId>
   <artifactId>mockneat</artifactId>
-  <version>0.4.7</version>
+  <version>0.4.8</version>
 </dependency>
 ```
 
 ### **gradle** (maven central, versions >= `0.4.4`)
 
 ```groovy
-implementation 'net.andreinc:mockneat:0.4.7'
+implementation 'net.andreinc:mockneat:0.4.8'
 ```
 
 #### **maven** (jcenter, versions =< `0.4.2.`)
