@@ -49,7 +49,7 @@ For a comprehensive description of the various APIs and their usage, it's recomm
 
 The `MockNeat.class` is the "entry-point" of the library. Think of this as a *fat* factory class, responsible for the instantiation of all the existing [data generators](../docs#datagenerators). It's the most important and, in most of the cases, the most "invisible" component from the library.
 
-By default, three reusable `MockNeat` "factory objects" are created, each wrapping a different type of java `Random` generators ([ThreadLocalRandom](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadLocalRandom.html), [SecureRandom](http://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html) or [the good Old Random](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html)):
+By default, three reusable `MockNeat` "factory objects" are created, each wrapping a different type of java `Random` generators ([ThreadLocalRandom](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ThreadLocalRandom.html), [SecureRandom](https://docs.oracle.com/javase/8/docs/api/java/security/SecureRandom.html) or [the good Old Random](https://docs.oracle.com/javase/8/docs/api/java/util/Random.html)):
 
 ```java
 MockNeat mock1 = MockNeat.threadLocal(); // recommended !
