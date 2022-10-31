@@ -637,7 +637,7 @@ List<User> users = filler(() -> new User())
                       .setter(User::setLastName, names().last())
                       .setter(User::setCreated, localDates().thisYear().toUtilDate())
                       .setter(User::setModified, localDates().thisMonth().toUtilDate())
-                    .list(() -> new ArrayList<>(), 10) // Collecting all the results ina  List of 10 elements.
+                    .list(() -> new ArrayList<>(), 10) // Collecting all the results in a List of 10 elements.
                     .get();
 ```
 
